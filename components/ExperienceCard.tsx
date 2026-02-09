@@ -69,7 +69,7 @@ export default function ExperienceCard({
         {achievements && achievements.length > 0 && (
           <div className="mt-4 pt-4 border-t border-gray-200">
             <h4 className="text-sm font-semibold text-gray-900 mb-2">
-              {t.experience.achievements}
+              {(t.experience as any).achievements || 'Belangrijkste prestaties:'}
             </h4>
             <ul className="space-y-1.5">
               {achievements.map((achievement, index) => (

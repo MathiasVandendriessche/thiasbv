@@ -115,7 +115,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
           <div className="mx-auto max-w-3xl">
             <div className="rounded-2xl bg-gradient-to-br from-primary-50/50 via-earth-50/30 to-sage-50/20 p-6 sm:p-8 ring-1 ring-gray-200/50">
               <p className="text-lg sm:text-xl leading-8 text-gray-700 text-center">
-                {t.experience.itExperience}
+                {(t.experience as any).itExperience}
               </p>
             </div>
           </div>
@@ -179,7 +179,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
                   : lang === 'en'
                   ? "Freelance ServiceNow consultant specialized in platform optimization and integration development."
                   : "Consultant ServiceNow freelance spécialisé dans l'optimisation de plateforme et le développement d'intégrations.",
-                params.lang === 'nl'
+                lang === 'nl'
                   ? "Huidige opdracht bij Belgische netbeheerder: focus op optimaliseren van de huidige ServiceNow instance, SOAP integraties en verdere ontwikkeling van het platform."
                   : lang === 'en'
                   ? "Current assignment at Belgian grid operator: focus on optimizing the current ServiceNow instance, SOAP integrations and further platform development."
@@ -203,7 +203,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
                   : lang === 'en'
                   ? "As a Functional Consultant, I gathered and analyzed business requirements from stakeholders and translated them into functional specifications."
                   : "En tant que Consultant Fonctionnel, j'ai recueilli et analysé les exigences métier des parties prenantes et les ai traduites en spécifications fonctionnelles.",
-                params.lang === 'nl'
+                lang === 'nl'
                   ? "Ik creëerde user stories en functionele designs voor ServiceNow modules met focus op best practices."
                   : lang === 'en'
                   ? "I created user stories and functional designs for ServiceNow modules with a focus on best practices."

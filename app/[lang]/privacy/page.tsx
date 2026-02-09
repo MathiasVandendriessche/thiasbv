@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
     title: lang === 'nl' ? "Privacybeleid & Cookiebeleid - Thias Consultancy" : lang === 'en' ? "Privacy Policy & Cookie Policy - Thias Consultancy" : "Politique de Confidentialité & Politique des Cookies - Thias Consultancy",
     description: lang === 'nl'
       ? "Privacybeleid en cookiebeleid van Thias Consultancy."
-      : params.lang === 'en'
+      : lang === 'en'
       ? "Privacy policy and cookie policy of Thias Consultancy."
       : "Politique de confidentialité et politique des cookies de Thias Consultancy.",
   };
@@ -57,10 +57,10 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
               {t.privacy.dataCollectionText}
             </p>
             <ul className="list-disc pl-6 text-gray-700 mb-4 space-y-2">
-              <li>{params.lang === 'nl' ? 'Naam' : params.lang === 'en' ? 'Name' : 'Nom'}</li>
-              <li>{params.lang === 'nl' ? 'E-mailadres' : params.lang === 'en' ? 'Email address' : 'Adresse e-mail'}</li>
-              <li>{params.lang === 'nl' ? 'Telefoonnummer (optioneel)' : params.lang === 'en' ? 'Phone number (optional)' : 'Numéro de téléphone (optionnel)'}</li>
-              <li>{params.lang === 'nl' ? 'Bericht' : params.lang === 'en' ? 'Message' : 'Message'}</li>
+              <li>{lang === 'nl' ? 'Naam' : lang === 'en' ? 'Name' : 'Nom'}</li>
+              <li>{lang === 'nl' ? 'E-mailadres' : lang === 'en' ? 'Email address' : 'Adresse e-mail'}</li>
+              <li>{lang === 'nl' ? 'Telefoonnummer (optioneel)' : lang === 'en' ? 'Phone number (optional)' : 'Numéro de téléphone (optionnel)'}</li>
+              <li>{lang === 'nl' ? 'Bericht' : lang === 'en' ? 'Message' : 'Message'}</li>
             </ul>
 
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">
@@ -70,9 +70,9 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
               {t.privacy.dataUseText}
             </p>
             <ul className="list-disc pl-6 text-gray-700 mb-4 space-y-2">
-              <li>{params.lang === 'nl' ? 'Het beantwoorden van uw vragen en verzoeken' : params.lang === 'en' ? 'Answering your questions and requests' : 'Répondre à vos questions et demandes'}</li>
-              <li>{params.lang === 'nl' ? 'Het opnemen van contact met u over onze diensten' : params.lang === 'en' ? 'Contacting you about our services' : 'Vous contacter concernant nos services'}</li>
-              <li>{params.lang === 'nl' ? 'Het verbeteren van onze dienstverlening' : params.lang === 'en' ? 'Improving our services' : 'Améliorer nos services'}</li>
+              <li>{lang === 'nl' ? 'Het beantwoorden van uw vragen en verzoeken' : lang === 'en' ? 'Answering your questions and requests' : 'Répondre à vos questions et demandes'}</li>
+              <li>{lang === 'nl' ? 'Het opnemen van contact met u over onze diensten' : lang === 'en' ? 'Contacting you about our services' : 'Vous contacter concernant nos services'}</li>
+              <li>{lang === 'nl' ? 'Het verbeteren van onze dienstverlening' : lang === 'en' ? 'Improving our services' : 'Améliorer nos services'}</li>
             </ul>
 
             <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">
@@ -89,10 +89,10 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
               {t.privacy.yourRightsText}
             </p>
             <ul className="list-disc pl-6 text-gray-700 mb-4 space-y-2">
-              <li>{params.lang === 'nl' ? 'Toegang te krijgen tot uw persoonlijke gegevens' : params.lang === 'en' ? 'Access your personal data' : 'Accéder à vos données personnelles'}</li>
-              <li>{params.lang === 'nl' ? 'Uw gegevens te corrigeren of te verwijderen' : params.lang === 'en' ? 'Correct or delete your data' : 'Corriger ou supprimer vos données'}</li>
-              <li>{params.lang === 'nl' ? 'Bezwaar te maken tegen de verwerking van uw gegevens' : params.lang === 'en' ? 'Object to the processing of your data' : 'Vous opposer au traitement de vos données'}</li>
-              <li>{params.lang === 'nl' ? 'Uw gegevens te exporteren' : params.lang === 'en' ? 'Export your data' : 'Exporter vos données'}</li>
+              <li>{lang === 'nl' ? 'Toegang te krijgen tot uw persoonlijke gegevens' : lang === 'en' ? 'Access your personal data' : 'Accéder à vos données personnelles'}</li>
+              <li>{lang === 'nl' ? 'Uw gegevens te corrigeren of te verwijderen' : lang === 'en' ? 'Correct or delete your data' : 'Corriger ou supprimer vos données'}</li>
+              <li>{lang === 'nl' ? 'Bezwaar te maken tegen de verwerking van uw gegevens' : lang === 'en' ? 'Object to the processing of your data' : 'Vous opposer au traitement de vos données'}</li>
+              <li>{lang === 'nl' ? 'Uw gegevens te exporteren' : lang === 'en' ? 'Export your data' : 'Exporter vos données'}</li>
             </ul>
 
             <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">
@@ -117,16 +117,16 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
             </p>
             <ul className="list-disc pl-6 text-gray-700 mb-4 space-y-2">
               <li>
-                <strong>{params.lang === 'nl' ? 'Essentiële cookies:' : params.lang === 'en' ? 'Essential cookies:' : 'Cookies essentiels :'}</strong>{' '}
-                {params.lang === 'nl' ? 'Deze cookies zijn noodzakelijk voor het functioneren van de website en kunnen niet worden uitgeschakeld.' : params.lang === 'en' ? 'These cookies are necessary for the website to function and cannot be disabled.' : 'Ces cookies sont nécessaires au fonctionnement du site web et ne peuvent pas être désactivés.'}
+                <strong>{lang === 'nl' ? 'Essentiële cookies:' : lang === 'en' ? 'Essential cookies:' : 'Cookies essentiels :'}</strong>{' '}
+                {lang === 'nl' ? 'Deze cookies zijn noodzakelijk voor het functioneren van de website en kunnen niet worden uitgeschakeld.' : lang === 'en' ? 'These cookies are necessary for the website to function and cannot be disabled.' : 'Ces cookies sont nécessaires au fonctionnement du site web et ne peuvent pas être désactivés.'}
               </li>
               <li>
-                <strong>{params.lang === 'nl' ? 'Functionele cookies:' : params.lang === 'en' ? 'Functional cookies:' : 'Cookies fonctionnels :'}</strong>{' '}
-                {params.lang === 'nl' ? 'Deze cookies stellen de website in staat om verbeterde functionaliteit en personalisatie te bieden.' : params.lang === 'en' ? 'These cookies enable the website to provide enhanced functionality and personalization.' : 'Ces cookies permettent au site web de fournir une fonctionnalité améliorée et une personnalisation.'}
+                <strong>{lang === 'nl' ? 'Functionele cookies:' : lang === 'en' ? 'Functional cookies:' : 'Cookies fonctionnels :'}</strong>{' '}
+                {lang === 'nl' ? 'Deze cookies stellen de website in staat om verbeterde functionaliteit en personalisatie te bieden.' : lang === 'en' ? 'These cookies enable the website to provide enhanced functionality and personalization.' : 'Ces cookies permettent au site web de fournir une fonctionnalité améliorée et une personnalisation.'}
               </li>
               <li>
-                <strong>{params.lang === 'nl' ? 'Analytische cookies:' : params.lang === 'en' ? 'Analytical cookies:' : 'Cookies analytiques :'}</strong>{' '}
-                {params.lang === 'nl' ? 'Deze cookies helpen ons te begrijpen hoe bezoekers de website gebruiken door informatie anoniem te verzamelen.' : params.lang === 'en' ? 'These cookies help us understand how visitors use the website by collecting information anonymously.' : 'Ces cookies nous aident à comprendre comment les visiteurs utilisent le site web en collectant des informations de manière anonyme.'}
+                <strong>{lang === 'nl' ? 'Analytische cookies:' : lang === 'en' ? 'Analytical cookies:' : 'Cookies analytiques :'}</strong>{' '}
+                {lang === 'nl' ? 'Deze cookies helpen ons te begrijpen hoe bezoekers de website gebruiken door informatie anoniem te verzamelen.' : lang === 'en' ? 'These cookies help us understand how visitors use the website by collecting information anonymously.' : 'Ces cookies nous aident à comprendre comment les visiteurs utilisent le site web en collectant des informations de manière anonyme.'}
               </li>
             </ul>
 
@@ -145,11 +145,11 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
             </p>
             <ul className="list-none text-gray-700 mb-4 space-y-2">
               <li>
-                {params.lang === 'nl' ? 'E-mail:' : params.lang === 'en' ? 'Email:' : 'E-mail :'}{' '}
+                {lang === 'nl' ? 'E-mail:' : lang === 'en' ? 'Email:' : 'E-mail :'}{' '}
                 <a href="mailto:m@thiasbv.com" className="text-primary-600 hover:text-primary-700">m@thiasbv.com</a>
               </li>
               <li>
-                {params.lang === 'nl' ? 'Telefoon:' : params.lang === 'en' ? 'Phone:' : 'Téléphone :'}{' '}
+                {lang === 'nl' ? 'Telefoon:' : lang === 'en' ? 'Phone:' : 'Téléphone :'}{' '}
                 <a href="tel:+32485119256" className="text-primary-600 hover:text-primary-700">+32 485 11 92 56</a>
               </li>
             </ul>
