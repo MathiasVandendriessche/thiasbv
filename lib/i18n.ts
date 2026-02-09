@@ -114,14 +114,6 @@ export const translations = {
       privacy: 'Privacy & Cookies',
       copyright: 'Alle rechten voorbehouden',
     },
-    experience: {
-      title: 'Ervaring & Expertise',
-      subtitle: 'Jarenlange ervaring met ServiceNow en diepgaande expertise in IT Service Management',
-      subtitle2: 'Van strategisch advies tot technische implementatie',
-      certifications: 'Certificeringen',
-      certificationsSubtitle: 'Erkende expertise en continue ontwikkeling',
-      viewLinkedIn: 'Bekijk alle certificeringen op LinkedIn',
-    },
     privacy: {
       title: 'Privacybeleid & Cookiebeleid',
       lastUpdated: 'Laatst bijgewerkt',
@@ -252,16 +244,6 @@ export const translations = {
       privacy: 'Privacy & Cookies',
       copyright: 'All rights reserved',
     },
-    experience: {
-      title: 'Experience & Expertise',
-      subtitle: 'Years of experience with ServiceNow and deep expertise in IT Service Management',
-      subtitle2: 'From strategic advice to technical implementation',
-      itExperience: 'ServiceNow never stands alone. With more than 20 years of experience in IT service management, we support organizations in streamlining processes, improving service quality and creating lasting operational value.',
-      achievements: 'Key Achievements:',
-      certifications: 'Certifications',
-      certificationsSubtitle: 'Recognized expertise and continuous development',
-      viewLinkedIn: 'View all certifications on LinkedIn',
-    },
     privacy: {
       title: 'Privacy Policy & Cookie Policy',
       lastUpdated: 'Last updated',
@@ -391,16 +373,6 @@ export const translations = {
       contact: 'Contact',
       privacy: 'Confidentialité & Cookies',
       copyright: 'Tous droits réservés',
-    },
-    experience: {
-      title: 'Expérience & Expertise',
-      subtitle: 'Années d\'expérience avec ServiceNow et expertise approfondie en gestion des services informatiques',
-      subtitle2: 'Du conseil stratégique à l\'implémentation technique',
-      itExperience: 'ServiceNow ne fonctionne jamais seul. Avec plus de 20 ans d\'expérience en gestion des services informatiques, nous soutenons les organisations dans la rationalisation des processus, l\'amélioration de la qualité des services et la création de valeur opérationnelle durable.',
-      achievements: 'Principales Réalisations :',
-      certifications: 'Certifications',
-      certificationsSubtitle: 'Expertise reconnue et développement continu',
-      viewLinkedIn: 'Voir toutes les certifications sur LinkedIn',
     },
     privacy: {
       title: 'Politique de Confidentialité & Politique des Cookies',
