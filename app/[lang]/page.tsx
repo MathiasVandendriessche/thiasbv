@@ -17,69 +17,70 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getTranslations, type Language } from "@/lib/i18n";
 
-export default function Home({ params }: { params: { lang: Language } }) {
-  const t = getTranslations(params.lang);
+export default async function Home({ params }: { params: Promise<{ lang: Language }> }) {
+  const { lang } = await params;
+  const t = getTranslations(lang);
 
   const services = [
     {
-      title: params.lang === 'nl' ? "AI & Now Assist Implementatie" : params.lang === 'en' ? "AI & Now Assist Implementation" : "Implémentation IA & Now Assist",
-      description: params.lang === 'nl' 
+      title: lang === 'nl' ? "AI & Now Assist Implementatie" : lang === 'en' ? "AI & Now Assist Implementation" : "Implémentation IA & Now Assist",
+      description: lang === 'nl' 
         ? "Implementatie van ServiceNow AI capabilities zoals Now Assist voor Virtual Agent, AI Agents en Agentic Workflows. ServiceNow ondersteunt integratie met eigen LLM's en externe AI providers voor volledige controle over je AI-oplossingen."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Implementation of ServiceNow AI capabilities such as Now Assist for Virtual Agent, AI Agents and Agentic Workflows. ServiceNow supports integration with your own LLMs and external AI providers for full control over your AI solutions."
         : "Implémentation des capacités IA de ServiceNow telles que Now Assist pour Virtual Agent, AI Agents et Agentic Workflows. ServiceNow prend en charge l'intégration avec vos propres LLM et fournisseurs d'IA externes pour un contrôle total sur vos solutions IA.",
       icon: Sparkles,
     },
     {
-      title: params.lang === 'nl' ? "ServiceNow Implementatie" : params.lang === 'en' ? "ServiceNow Implementation" : "Implémentation ServiceNow",
-      description: params.lang === 'nl' 
+      title: lang === 'nl' ? "ServiceNow Implementatie" : lang === 'en' ? "ServiceNow Implementation" : "Implémentation ServiceNow",
+      description: lang === 'nl' 
         ? "Volledige implementatie van ServiceNow platformen, afgestemd op jouw specifieke bedrijfsbehoeften."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Full implementation of ServiceNow platforms, tailored to your specific business needs."
         : "Implémentation complète des plateformes ServiceNow, adaptée à vos besoins commerciaux spécifiques.",
       icon: Settings,
     },
     {
-      title: params.lang === 'nl' ? "Procesoptimalisatie" : params.lang === 'en' ? "Process Optimization" : "Optimisation des Processus",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Procesoptimalisatie" : lang === 'en' ? "Process Optimization" : "Optimisation des Processus",
+      description: lang === 'nl'
         ? "Analyse en optimalisatie van bedrijfsprocessen met behulp van ServiceNow tools en best practices."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Analysis and optimization of business processes using ServiceNow tools and best practices."
         : "Analyse et optimisation des processus métier à l'aide des outils ServiceNow et des meilleures pratiques.",
       icon: Zap,
     },
     {
-      title: params.lang === 'nl' ? "Strategisch Advies" : params.lang === 'en' ? "Strategic Advice" : "Conseil Stratégique",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Strategisch Advies" : lang === 'en' ? "Strategic Advice" : "Conseil Stratégique",
+      description: lang === 'nl'
         ? "Deskundig advies over hoe ServiceNow jouw organisatie kan helpen groeien en efficiënter werken."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Expert advice on how ServiceNow can help your organization grow and work more efficiently."
         : "Conseil d'expert sur la façon dont ServiceNow peut aider votre organisation à croître et à travailler plus efficacement.",
       icon: Target,
     },
     {
-      title: params.lang === 'nl' ? "Training & Begeleiding" : params.lang === 'en' ? "Training & Guidance" : "Formation & Accompagnement",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Training & Begeleiding" : lang === 'en' ? "Training & Guidance" : "Formation & Accompagnement",
+      description: lang === 'nl'
         ? "Uitgebreide trainingen en begeleiding voor jouw team om het maximale uit ServiceNow te halen."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Comprehensive training and guidance for your team to get the most out of ServiceNow."
         : "Formation et accompagnement complets pour votre équipe pour tirer le meilleur parti de ServiceNow.",
       icon: Users,
     },
     {
-      title: params.lang === 'nl' ? "Custom Development" : params.lang === 'en' ? "Custom Development" : "Développement Sur Mesure",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Custom Development" : lang === 'en' ? "Custom Development" : "Développement Sur Mesure",
+      description: lang === 'nl'
         ? "Ontwikkeling van op maat gemaakte oplossingen binnen het ServiceNow platform."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Development of customized solutions within the ServiceNow platform."
         : "Développement de solutions sur mesure dans la plateforme ServiceNow.",
       icon: BarChart3,
     },
     {
-      title: params.lang === 'nl' ? "Onderhoud & Support" : params.lang === 'en' ? "Maintenance & Support" : "Maintenance & Support",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Onderhoud & Support" : lang === 'en' ? "Maintenance & Support" : "Maintenance & Support",
+      description: lang === 'nl'
         ? "Continue ondersteuning en onderhoud om ervoor te zorgen dat jouw ServiceNow omgeving optimaal blijft presteren."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Continuous support and maintenance to ensure your ServiceNow environment continues to perform optimally."
         : "Support et maintenance continus pour garantir que votre environnement ServiceNow continue de fonctionner de manière optimale.",
       icon: Shield,
@@ -106,7 +107,7 @@ export default function Home({ params }: { params: { lang: Language } }) {
 
   return (
     <>
-      <Hero lang={params.lang} />
+      <Hero lang={lang} />
 
       {/* Experience & IT Service Management Section */}
       <section className="py-12 sm:py-16 bg-gradient-to-b from-white to-earth-50/20">
@@ -168,52 +169,52 @@ export default function Home({ params }: { params: { lang: Language } }) {
 
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-6 lg:mx-0 lg:max-w-none">
             <ExperienceCard
-              title={params.lang === 'nl' ? "Freelance Consultant" : params.lang === 'en' ? "Freelance Consultant" : "Consultant Freelance"}
+              title={lang === 'nl' ? "Freelance Consultant" : lang === 'en' ? "Freelance Consultant" : "Consultant Freelance"}
               company="Devoteam"
-              location={params.lang === 'nl' ? "België" : params.lang === 'en' ? "Belgium" : "Belgique"}
-              period={params.lang === 'nl' ? "November 2025 - Heden" : params.lang === 'en' ? "November 2025 - Present" : "Novembre 2025 - Présent"}
+              location={lang === 'nl' ? "België" : lang === 'en' ? "Belgium" : "Belgique"}
+              period={lang === 'nl' ? "November 2025 - Heden" : lang === 'en' ? "November 2025 - Present" : "Novembre 2025 - Présent"}
               description={[
-                params.lang === 'nl' 
+                lang === 'nl' 
                   ? "Freelance ServiceNow consultant gespecialiseerd in platform optimalisatie en integratie ontwikkeling."
-                  : params.lang === 'en'
+                  : lang === 'en'
                   ? "Freelance ServiceNow consultant specialized in platform optimization and integration development."
                   : "Consultant ServiceNow freelance spécialisé dans l'optimisation de plateforme et le développement d'intégrations.",
                 params.lang === 'nl'
                   ? "Huidige opdracht bij Belgische netbeheerder: focus op optimaliseren van de huidige ServiceNow instance, SOAP integraties en verdere ontwikkeling van het platform."
-                  : params.lang === 'en'
+                  : lang === 'en'
                   ? "Current assignment at Belgian grid operator: focus on optimizing the current ServiceNow instance, SOAP integrations and further platform development."
                   : "Mission actuelle chez un gestionnaire de réseau belge : focus sur l'optimisation de l'instance ServiceNow actuelle, les intégrations SOAP et le développement ultérieur de la plateforme."
               ]}
               achievements={[
-                params.lang === 'nl' ? "Optimalisatie van ServiceNow instance bij Belgische netbeheerder" : params.lang === 'en' ? "Optimization of ServiceNow instance at Belgian grid operator" : "Optimisation de l'instance ServiceNow chez le gestionnaire de réseau belge",
-                params.lang === 'nl' ? "Ontwikkeling en onderhoud van SOAP integraties" : params.lang === 'en' ? "Development and maintenance of SOAP integrations" : "Développement et maintenance des intégrations SOAP",
-                params.lang === 'nl' ? "Platform ontwikkeling en uitbreiding van functionaliteit" : params.lang === 'en' ? "Platform development and expansion of functionality" : "Développement de plateforme et expansion de la fonctionnalité"
+                lang === 'nl' ? "Optimalisatie van ServiceNow instance bij Belgische netbeheerder" : lang === 'en' ? "Optimization of ServiceNow instance at Belgian grid operator" : "Optimisation de l'instance ServiceNow chez le gestionnaire de réseau belge",
+                lang === 'nl' ? "Ontwikkeling en onderhoud van SOAP integraties" : lang === 'en' ? "Development and maintenance of SOAP integrations" : "Développement et maintenance des intégrations SOAP",
+                lang === 'nl' ? "Platform ontwikkeling en uitbreiding van functionaliteit" : lang === 'en' ? "Platform development and expansion of functionality" : "Développement de plateforme et expansion de la fonctionnalité"
               ]}
-              lang={params.lang}
+              lang={lang}
             />
             <ExperienceCard
-              title={params.lang === 'nl' ? "Technical Consultant / Functional Consultant" : params.lang === 'en' ? "Technical Consultant / Functional Consultant" : "Consultant Technique / Consultant Fonctionnel"}
+              title={lang === 'nl' ? "Technical Consultant / Functional Consultant" : lang === 'en' ? "Technical Consultant / Functional Consultant" : "Consultant Technique / Consultant Fonctionnel"}
               company="Qinexo"
-              location={params.lang === 'nl' ? "Brugge Regio, België" : params.lang === 'en' ? "Bruges Region, Belgium" : "Région de Bruges, Belgique"}
-              period={params.lang === 'nl' ? "Oktober 2023 - Oktober 2025" : params.lang === 'en' ? "October 2023 - October 2025" : "Octobre 2023 - Octobre 2025"}
+              location={lang === 'nl' ? "Brugge Regio, België" : lang === 'en' ? "Bruges Region, Belgium" : "Région de Bruges, Belgique"}
+              period={lang === 'nl' ? "Oktober 2023 - Oktober 2025" : lang === 'en' ? "October 2023 - October 2025" : "Octobre 2023 - Octobre 2025"}
               description={[
-                params.lang === 'nl'
+                lang === 'nl'
                   ? "Als Functional Consultant verzamelde en analyseerde ik business requirements van stakeholders en vertaalde deze naar functionele specificaties."
-                  : params.lang === 'en'
+                  : lang === 'en'
                   ? "As a Functional Consultant, I gathered and analyzed business requirements from stakeholders and translated them into functional specifications."
                   : "En tant que Consultant Fonctionnel, j'ai recueilli et analysé les exigences métier des parties prenantes et les ai traduites en spécifications fonctionnelles.",
                 params.lang === 'nl'
                   ? "Ik creëerde user stories en functionele designs voor ServiceNow modules met focus op best practices."
-                  : params.lang === 'en'
+                  : lang === 'en'
                   ? "I created user stories and functional designs for ServiceNow modules with a focus on best practices."
                   : "J'ai créé des user stories et des designs fonctionnels pour les modules ServiceNow en me concentrant sur les meilleures pratiques."
               ]}
               achievements={[
-                params.lang === 'nl' ? "Lead consultant CSM/ITSM implementatie voor Nederlandse IT MSP" : params.lang === 'en' ? "Lead consultant CSM/ITSM implementation for Dutch IT MSP" : "Consultant principal implémentation CSM/ITSM pour MSP IT néerlandais",
-                params.lang === 'nl' ? "Lead consultant ITSM implementatie voor Belgisch recyclingbedrijf" : params.lang === 'en' ? "Lead consultant ITSM implementation for Belgian recycling company" : "Consultant principal implémentation ITSM pour entreprise de recyclage belge",
-                params.lang === 'nl' ? "Functional analyst rol met focus op requirements en UAT" : params.lang === 'en' ? "Functional analyst role focusing on requirements and UAT" : "Rôle d'analyste fonctionnel axé sur les exigences et l'UAT"
+                lang === 'nl' ? "Lead consultant CSM/ITSM implementatie voor Nederlandse IT MSP" : lang === 'en' ? "Lead consultant CSM/ITSM implementation for Dutch IT MSP" : "Consultant principal implémentation CSM/ITSM pour MSP IT néerlandais",
+                lang === 'nl' ? "Lead consultant ITSM implementatie voor Belgisch recyclingbedrijf" : lang === 'en' ? "Lead consultant ITSM implementation for Belgian recycling company" : "Consultant principal implémentation ITSM pour entreprise de recyclage belge",
+                lang === 'nl' ? "Functional analyst rol met focus op requirements en UAT" : lang === 'en' ? "Functional analyst role focusing on requirements and UAT" : "Rôle d'analyste fonctionnel axé sur les exigences et l'UAT"
               ]}
-              lang={params.lang}
+              lang={lang}
             />
           </div>
         </div>
@@ -244,7 +245,7 @@ export default function Home({ params }: { params: { lang: Language } }) {
 
           <div className="mt-8 text-center">
             <Link
-              href={`/${params.lang}/diensten`}
+              href={`/${lang}/diensten`}
               className="group inline-flex items-center gap-2 rounded-lg bg-gray-900 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition-all duration-200"
             >
               {t.services.viewAll}
@@ -273,7 +274,7 @@ export default function Home({ params }: { params: { lang: Language } }) {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href={`/${params.lang}/contact`}
+                href={`/${lang}/contact`}
                 className="rounded-lg bg-white px-8 py-4 text-base font-semibold text-primary-600 shadow-lg shadow-white/20 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-200"
               >
                 {t.cta.button}

@@ -11,81 +11,83 @@ import {
 import { getTranslations, type Language } from "@/lib/i18n";
 import Link from "next/link";
 
-export function generateMetadata({ params }: { params: { lang: Language } }) {
-  const t = getTranslations(params.lang);
+export async function generateMetadata({ params }: { params: Promise<{ lang: Language }> }) {
+  const { lang } = await params;
+  const t = getTranslations(lang);
   return {
-    title: params.lang === 'nl' ? "Diensten - Thias Consultancy" : params.lang === 'en' ? "Services - Thias Consultancy" : "Services - Thias Consultancy",
-    description: params.lang === 'nl' 
+    title: lang === 'nl' ? "Diensten - Thias Consultancy" : lang === 'en' ? "Services - Thias Consultancy" : "Services - Thias Consultancy",
+    description: lang === 'nl' 
       ? "Ontdek onze volledige range aan ServiceNow diensten: implementatie, procesoptimalisatie, training en meer."
-      : params.lang === 'en'
+      : lang === 'en'
       ? "Discover our full range of ServiceNow services: implementation, process optimization, training and more."
       : "Découvrez notre gamme complète de services ServiceNow : implémentation, optimisation des processus, formation et plus encore.",
   };
 }
 
-export default function DienstenPage({ params }: { params: { lang: Language } }) {
-  const t = getTranslations(params.lang);
+export default async function DienstenPage({ params }: { params: Promise<{ lang: Language }> }) {
+  const { lang } = await params;
+  const t = getTranslations(lang);
 
   const services = [
     {
-      title: params.lang === 'nl' ? "AI & Now Assist Implementatie" : params.lang === 'en' ? "AI & Now Assist Implementation" : "Implémentation IA & Now Assist",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "AI & Now Assist Implementatie" : lang === 'en' ? "AI & Now Assist Implementation" : "Implémentation IA & Now Assist",
+      description: lang === 'nl'
         ? "Implementatie en optimalisatie van ServiceNow AI capabilities, inclusief Now Assist voor Virtual Agent, AI Agents en Agentic Workflows. ServiceNow ondersteunt integratie met eigen LLM's en externe AI providers, waardoor je volledige controle hebt over je AI-oplossingen."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Implementation and optimization of ServiceNow AI capabilities, including Now Assist for Virtual Agent, AI Agents and Agentic Workflows. ServiceNow supports integration with your own LLMs and external AI providers, giving you full control over your AI solutions."
         : "Implémentation et optimisation des capacités IA de ServiceNow, y compris Now Assist pour Virtual Agent, AI Agents et Agentic Workflows. ServiceNow prend en charge l'intégration avec vos propres LLM et fournisseurs d'IA externes, vous donnant un contrôle total sur vos solutions IA.",
       icon: Sparkles,
     },
     {
-      title: params.lang === 'nl' ? "ServiceNow Implementatie" : params.lang === 'en' ? "ServiceNow Implementation" : "Implémentation ServiceNow",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "ServiceNow Implementatie" : lang === 'en' ? "ServiceNow Implementation" : "Implémentation ServiceNow",
+      description: lang === 'nl'
         ? "Volledige implementatie van ServiceNow platformen, afgestemd op jouw specifieke bedrijfsbehoeften. Van initiële planning tot succesvolle deployment, wij zorgen ervoor dat jouw ServiceNow omgeving perfect aansluit bij jouw organisatie."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Full implementation of ServiceNow platforms, tailored to your specific business needs. From initial planning to successful deployment, we ensure your ServiceNow environment perfectly aligns with your organization."
         : "Implémentation complète des plateformes ServiceNow, adaptée à vos besoins commerciaux spécifiques. De la planification initiale au déploiement réussi, nous veillons à ce que votre environnement ServiceNow s'aligne parfaitement avec votre organisation.",
       icon: Settings,
     },
     {
-      title: params.lang === 'nl' ? "Procesoptimalisatie" : params.lang === 'en' ? "Process Optimization" : "Optimisation des Processus",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Procesoptimalisatie" : lang === 'en' ? "Process Optimization" : "Optimisation des Processus",
+      description: lang === 'nl'
         ? "Analyse en optimalisatie van bedrijfsprocessen met behulp van ServiceNow tools en best practices. We identificeren knelpunten en implementeren efficiënte workflows die tijd en kosten besparen."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Analysis and optimization of business processes using ServiceNow tools and best practices. We identify bottlenecks and implement efficient workflows that save time and costs."
         : "Analyse et optimisation des processus métier à l'aide des outils ServiceNow et des meilleures pratiques. Nous identifions les goulots d'étranglement et mettons en œuvre des workflows efficaces qui font gagner du temps et de l'argent.",
       icon: Zap,
     },
     {
-      title: params.lang === 'nl' ? "Strategisch Advies" : params.lang === 'en' ? "Strategic Advice" : "Conseil Stratégique",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Strategisch Advies" : lang === 'en' ? "Strategic Advice" : "Conseil Stratégique",
+      description: lang === 'nl'
         ? "Deskundig advies over hoe ServiceNow jouw organisatie kan helpen groeien en efficiënter werken. We helpen je bij het maken van strategische beslissingen die jouw business doelen ondersteunen."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Expert advice on how ServiceNow can help your organization grow and work more efficiently. We help you make strategic decisions that support your business goals."
         : "Conseil d'expert sur la façon dont ServiceNow peut aider votre organisation à croître et à travailler plus efficacement. Nous vous aidons à prendre des décisions stratégiques qui soutiennent vos objectifs commerciaux.",
       icon: Target,
     },
     {
-      title: params.lang === 'nl' ? "Training & Begeleiding" : params.lang === 'en' ? "Training & Guidance" : "Formation & Accompagnement",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Training & Begeleiding" : lang === 'en' ? "Training & Guidance" : "Formation & Accompagnement",
+      description: lang === 'nl'
         ? "Uitgebreide trainingen en begeleiding voor jouw team om het maximale uit ServiceNow te halen. Van basisgebruik tot geavanceerde configuratie, we zorgen ervoor dat jouw team zelfstandig kan werken."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Comprehensive training and guidance for your team to get the most out of ServiceNow. From basic usage to advanced configuration, we ensure your team can work independently."
         : "Formation et accompagnement complets pour votre équipe pour tirer le meilleur parti de ServiceNow. De l'utilisation de base à la configuration avancée, nous veillons à ce que votre équipe puisse travailler de manière indépendante.",
       icon: Users,
     },
     {
-      title: params.lang === 'nl' ? "Custom Development" : params.lang === 'en' ? "Custom Development" : "Développement Sur Mesure",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Custom Development" : lang === 'en' ? "Custom Development" : "Développement Sur Mesure",
+      description: lang === 'nl'
         ? "Ontwikkeling van op maat gemaakte oplossingen binnen het ServiceNow platform. We bouwen applicaties en integraties die perfect aansluiten bij jouw unieke bedrijfsprocessen."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Development of customized solutions within the ServiceNow platform. We build applications and integrations that perfectly align with your unique business processes."
         : "Développement de solutions sur mesure dans la plateforme ServiceNow. Nous construisons des applications et des intégrations qui s'alignent parfaitement avec vos processus métier uniques.",
       icon: BarChart3,
     },
     {
-      title: params.lang === 'nl' ? "Onderhoud & Support" : params.lang === 'en' ? "Maintenance & Support" : "Maintenance & Support",
-      description: params.lang === 'nl'
+      title: lang === 'nl' ? "Onderhoud & Support" : lang === 'en' ? "Maintenance & Support" : "Maintenance & Support",
+      description: lang === 'nl'
         ? "Continue ondersteuning en onderhoud om ervoor te zorgen dat jouw ServiceNow omgeving optimaal blijft presteren. We zorgen voor updates, monitoring en snelle respons op eventuele problemen."
-        : params.lang === 'en'
+        : lang === 'en'
         ? "Continuous support and maintenance to ensure your ServiceNow environment continues to perform optimally. We provide updates, monitoring and quick response to any issues."
         : "Support et maintenance continus pour garantir que votre environnement ServiceNow continue de fonctionner de manière optimale. Nous fournissons des mises à jour, une surveillance et une réponse rapide à tout problème.",
       icon: Shield,
@@ -112,7 +114,7 @@ export default function DienstenPage({ params }: { params: { lang: Language } })
             <div className="mb-6 flex justify-center">
               <div className="relative rounded-full px-5 py-2 text-sm leading-6 text-gray-600 ring-2 ring-primary-200/50 hover:ring-primary-300 bg-gradient-to-r from-primary-50 to-earth-50 backdrop-blur-sm shadow-sm">
                 <span className="font-semibold text-primary-700">
-                  {params.lang === 'nl' ? 'ServiceNow Expertise' : params.lang === 'en' ? 'ServiceNow Expertise' : 'Expertise ServiceNow'}
+                  {lang === 'nl' ? 'ServiceNow Expertise' : lang === 'en' ? 'ServiceNow Expertise' : 'Expertise ServiceNow'}
                 </span>
               </div>
             </div>
@@ -120,16 +122,16 @@ export default function DienstenPage({ params }: { params: { lang: Language } })
               {t.services.title}
             </h1>
             <p className="mt-4 text-lg leading-7 text-gray-600">
-              {params.lang === 'nl' 
+              {lang === 'nl' 
                 ? "Alles wat je nodig hebt om het maximale uit ServiceNow te halen."
-                : params.lang === 'en'
+                : lang === 'en'
                 ? "Everything you need to get the most out of ServiceNow."
                 : "Tout ce dont vous avez besoin pour tirer le meilleur parti de ServiceNow."}
             </p>
             <p className="mt-3 text-base leading-7 text-gray-500">
-              {params.lang === 'nl'
+              {lang === 'nl'
                 ? "Van strategisch advies tot volledige implementatie en ondersteuning."
-                : params.lang === 'en'
+                : lang === 'en'
                 ? "From strategic advice to full implementation and support."
                 : "Du conseil stratégique à l'implémentation complète et au support."}
             </p>
@@ -149,7 +151,7 @@ export default function DienstenPage({ params }: { params: { lang: Language } })
               </div>
               <div className="h-8 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent"></div>
               <span className="text-base font-bold text-gray-800">
-                {params.lang === 'nl' ? '20+ jaar ervaring' : params.lang === 'en' ? '20+ years experience' : '20+ ans d\'expérience'}
+                {lang === 'nl' ? '20+ jaar ervaring' : lang === 'en' ? '20+ years experience' : '20+ ans d\'expérience'}
               </span>
             </div>
           </div>
@@ -218,7 +220,7 @@ export default function DienstenPage({ params }: { params: { lang: Language } })
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href={`/${params.lang}/contact`}
+                href={`/${lang}/contact`}
                 className="rounded-lg bg-white px-8 py-4 text-base font-semibold text-primary-600 shadow-xl shadow-white/30 hover:bg-gray-50 hover:shadow-2xl hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-200"
               >
                 {t.services.cta.button}

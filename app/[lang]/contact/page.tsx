@@ -1,21 +1,23 @@
 import { Phone, Mail, MapPin, Linkedin } from "lucide-react";
 import { getTranslations, type Language } from "@/lib/i18n";
 
-export function generateMetadata({ params }: { params: { lang: Language } }) {
-  const t = getTranslations(params.lang);
+export async function generateMetadata({ params }: { params: Promise<{ lang: Language }> }) {
+  const { lang } = await params;
+  const t = getTranslations(lang);
   return {
-    title: params.lang === 'nl' ? "Contact - Thias Consultancy" : params.lang === 'en' ? "Contact - Thias Consultancy" : "Contact - Thias Consultancy",
-    description: params.lang === 'nl'
+    title: lang === 'nl' ? "Contact - Thias Consultancy" : lang === 'en' ? "Contact - Thias Consultancy" : "Contact - Thias Consultancy",
+    description: lang === 'nl'
       ? "Neem contact op met Thias Consultancy voor al jouw ServiceNow vragen en projecten."
-      : params.lang === 'en'
+      : lang === 'en'
       ? "Contact Thias Consultancy for all your ServiceNow questions and projects."
       : "Contactez Thias Consultancy pour toutes vos questions et projets ServiceNow.",
   };
 }
 
-export default function ContactPage({ params }: { params: { lang: Language } }) {
-  const t = getTranslations(params.lang);
-  const location = params.lang === 'nl' ? "Brugge Regio, België" : params.lang === 'en' ? "Bruges Region, Belgium" : "Région de Bruges, Belgique";
+export default async function ContactPage({ params }: { params: Promise<{ lang: Language }> }) {
+  const { lang } = await params;
+  const t = getTranslations(lang);
+  const location = lang === 'nl' ? "Brugge Regio, België" : lang === 'en' ? "Bruges Region, Belgium" : "Région de Bruges, Belgique";
 
   return (
     <div className="bg-white">

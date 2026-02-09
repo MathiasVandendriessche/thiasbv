@@ -7,8 +7,10 @@ import { getTranslations, type Language } from "@/lib/i18n";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-export function generateMetadata({ params }: { params: { lang: Language } }): Metadata {
-  const t = getTranslations(params.lang);
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const typedLang = lang as Language;
+  const t = getTranslations(typedLang);
   
   const metadata: Metadata = {
     title: "ServiceNow Freelance Consultant België | Thias Consultancy",
@@ -38,7 +40,7 @@ export function generateMetadata({ params }: { params: { lang: Language } }): Me
       description:
         "ServiceNow freelance consultant in België. Onafhankelijke, doelgerichte ServiceNow consultancy met meer dan 20 jaar ervaring.",
       type: "website",
-      locale: params.lang === 'nl' ? 'nl_NL' : params.lang === 'fr' ? 'fr_BE' : 'en_US',
+      locale: typedLang === 'nl' ? 'nl_NL' : typedLang === 'fr' ? 'fr_BE' : 'en_US',
       url: "https://www.thiasbv.com",
     },
     alternates: {
@@ -54,15 +56,17 @@ export function generateMetadata({ params }: { params: { lang: Language } }): Me
   return metadata;
 }
 
-export default function LangLayout({
+export default async function LangLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { lang: Language };
+  params: Promise<{ lang: string }>;
 }) {
+  const { lang } = await params;
+  const typedLang = lang as Language;
   return (
-    <html lang={params.lang} className={inter.variable}>
+    <html lang={typedLang} className={inter.variable}>
       <head>
         <script
           type="application/ld+json"
@@ -103,9 +107,9 @@ export default function LangLayout({
         />
       </head>
       <body>
-        <Header lang={params.lang} />
+        <Header lang={typedLang} />
         <main className="min-h-screen">{children}</main>
-        <Footer lang={params.lang} />
+        <Footer lang={typedLang} />
       </body>
     </html>
   );

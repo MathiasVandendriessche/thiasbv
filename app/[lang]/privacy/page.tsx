@@ -1,10 +1,11 @@
 import { getTranslations, type Language } from "@/lib/i18n";
 
-export function generateMetadata({ params }: { params: { lang: Language } }) {
-  const t = getTranslations(params.lang);
+export async function generateMetadata({ params }: { params: Promise<{ lang: Language }> }) {
+  const { lang } = await params;
+  const t = getTranslations(lang);
   return {
-    title: params.lang === 'nl' ? "Privacybeleid & Cookiebeleid - Thias Consultancy" : params.lang === 'en' ? "Privacy Policy & Cookie Policy - Thias Consultancy" : "Politique de Confidentialité & Politique des Cookies - Thias Consultancy",
-    description: params.lang === 'nl'
+    title: lang === 'nl' ? "Privacybeleid & Cookiebeleid - Thias Consultancy" : lang === 'en' ? "Privacy Policy & Cookie Policy - Thias Consultancy" : "Politique de Confidentialité & Politique des Cookies - Thias Consultancy",
+    description: lang === 'nl'
       ? "Privacybeleid en cookiebeleid van Thias Consultancy."
       : params.lang === 'en'
       ? "Privacy policy and cookie policy of Thias Consultancy."
@@ -12,10 +13,11 @@ export function generateMetadata({ params }: { params: { lang: Language } }) {
   };
 }
 
-export default function PrivacyPage({ params }: { params: { lang: Language } }) {
-  const t = getTranslations(params.lang);
+export default async function PrivacyPage({ params }: { params: Promise<{ lang: Language }> }) {
+  const { lang } = await params;
+  const t = getTranslations(lang);
   const dateFormatter = new Intl.DateTimeFormat(
-    params.lang === 'nl' ? 'nl-NL' : params.lang === 'en' ? 'en-US' : 'fr-FR',
+    lang === 'nl' ? 'nl-NL' : lang === 'en' ? 'en-US' : 'fr-FR',
     { year: 'numeric', month: 'long', day: 'numeric' }
   );
 
