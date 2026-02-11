@@ -50,7 +50,7 @@ export default async function ErvaringPage({ params }: { params: Promise<{ lang:
     {
       title: lang === 'nl' ? "Technical Consultant / Functional Consultant" : lang === 'en' ? "Technical Consultant / Functional Consultant" : "Consultant Technique / Consultant Fonctionnel",
       company: "Qinexo",
-      location: lang === 'nl' ? "Brugge Regio, België" : lang === 'en' ? "Bruges Region, Belgium" : "Région de Bruges, Belgique",
+      location: lang === 'nl' ? "Regio Antwerpen, België" : lang === 'en' ? "Antwerp Region, Belgium" : "Région d'Anvers, Belgique",
       period: lang === 'nl' ? "Oktober 2023 - Oktober 2025" : lang === 'en' ? "October 2023 - October 2025" : "Octobre 2023 - Octobre 2025",
       description: [
         lang === 'nl'

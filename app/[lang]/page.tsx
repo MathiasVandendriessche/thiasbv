@@ -89,11 +89,6 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
 
   const values = [
     {
-      title: t.why.independent.title,
-      description: t.why.independent.description,
-      icon: CheckCircle2,
-    },
-    {
       title: t.why.pragmatic.title,
       description: t.why.pragmatic.description,
       icon: TrendingUp,
@@ -195,7 +190,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
             <ExperienceCard
               title={lang === 'nl' ? "Technical Consultant / Functional Consultant" : lang === 'en' ? "Technical Consultant / Functional Consultant" : "Consultant Technique / Consultant Fonctionnel"}
               company="Qinexo"
-              location={lang === 'nl' ? "Brugge Regio, België" : lang === 'en' ? "Bruges Region, Belgium" : "Région de Bruges, Belgique"}
+              location={lang === 'nl' ? "Regio Antwerpen, België" : lang === 'en' ? "Antwerp Region, Belgium" : "Région d'Anvers, Belgique"}
               period={lang === 'nl' ? "Oktober 2023 - Oktober 2025" : lang === 'en' ? "October 2023 - October 2025" : "Octobre 2023 - Octobre 2025"}
               description={[
                 lang === 'nl'

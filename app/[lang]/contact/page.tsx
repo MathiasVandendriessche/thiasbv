@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
 export default async function ContactPage({ params }: { params: Promise<{ lang: Language }> }) {
   const { lang } = await params;
   const t = getTranslations(lang);
-  const location = lang === 'nl' ? "Brugge Regio, België" : lang === 'en' ? "Bruges Region, Belgium" : "Région de Bruges, Belgique";
+  const location = lang === 'nl' ? "Regio Antwerpen, België" : lang === 'en' ? "Antwerp Region, Belgium" : "Région d'Anvers, Belgique";
 
   return (
     <div className="bg-white">
@@ -94,7 +94,14 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
                     <h3 className="text-lg font-semibold text-gray-900">
                       {t.contact.location}
                     </h3>
-                    <p className="mt-2 text-gray-600 font-medium">{location}</p>
+                    <a
+                      href="https://www.google.com/maps?q=Vijverlaan+59%2F5+2610+Wilrijk"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 block text-gray-600 hover:text-primary-600 transition-colors font-medium"
+                    >
+                      {location}
+                    </a>
                   </div>
                 </div>
 

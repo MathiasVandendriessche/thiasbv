@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const metadata: Metadata = {
     title: "ServiceNow Freelance Consultant België | Thias Consultancy",
     description:
-      "ServiceNow freelance consultant in België. Onafhankelijke, doelgerichte ServiceNow consultancy die techniek, proceskennis en praktijkervaring samenbrengt voor duurzame resultaten. Meer dan 20 jaar ervaring in IT servicemanagement. Freelance ServiceNow expert voor implementatie, optimalisatie en integraties.",
+      "ServiceNow freelance consultant in België. Doelgerichte ServiceNow consultancy die techniek, proceskennis en praktijkervaring samenbrengt voor duurzame resultaten. Meer dan 20 jaar ervaring in IT servicemanagement. Freelance ServiceNow expert voor implementatie, optimalisatie en integraties.",
     keywords: [
       "ServiceNow freelance",
       "ServiceNow freelance consultant",
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     openGraph: {
       title: "ServiceNow Freelance Consultant België | Thias Consultancy",
       description:
-        "ServiceNow freelance consultant in België. Onafhankelijke, doelgerichte ServiceNow consultancy met meer dan 20 jaar ervaring.",
+        "ServiceNow freelance consultant in België. Doelgerichte ServiceNow consultancy met meer dan 20 jaar ervaring.",
       type: "website",
       locale: typedLang === 'nl' ? 'nl_NL' : typedLang === 'fr' ? 'fr_BE' : 'en_US',
       url: "https://www.thiasbv.com",
@@ -70,6 +70,7 @@ export default async function LangLayout({
       <head>
         <script
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -88,9 +89,11 @@ export default async function LangLayout({
               },
               "address": {
                 "@type": "PostalAddress",
-                "addressCountry": "BE",
-                "addressRegion": "West-Vlaanderen",
-                "addressLocality": "Brugge Regio"
+                "streetAddress": "Vijverlaan 59/5",
+                "postalCode": "2610",
+                "addressLocality": "Wilrijk",
+                "addressRegion": "Antwerpen",
+                "addressCountry": "BE"
               },
               "founder": {
                 "@type": "Person",
