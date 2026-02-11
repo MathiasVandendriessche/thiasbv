@@ -51,6 +51,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         'fr': 'https://www.thiasbv.com/fr',
       },
     },
+    icons: {
+      icon: "/icon.svg",
+    },
   };
 
   return metadata;

@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   title: "Thias Consultancy",
   description: "ServiceNow freelance consultant in België",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
