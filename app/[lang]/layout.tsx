@@ -128,14 +128,6 @@ export default async function LangLayout({
                 "areaServed": "BE",
                 "availableLanguage": ["nl", "en", "fr"]
               },
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "Vijverlaan 59/5",
-                "postalCode": "2610",
-                "addressLocality": "Wilrijk",
-                "addressRegion": "Antwerpen",
-                "addressCountry": "BE"
-              },
               "founder": {
                 "@type": "Person",
                 "name": "Mathias Vandendriessche",
