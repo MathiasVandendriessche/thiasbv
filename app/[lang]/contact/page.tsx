@@ -5,12 +5,20 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   const { lang } = await params;
   const t = getTranslations(lang);
   return {
-    title: lang === 'nl' ? "Contact - Thias Consultancy" : lang === 'en' ? "Contact - Thias Consultancy" : "Contact - Thias Consultancy",
+    title: lang === 'nl' ? "Contact - AI & ServiceNow Freelance België" : lang === 'en' ? "Contact - AI & ServiceNow Freelance Belgium" : "Contact - IA & ServiceNow Freelance Belgique",
     description: lang === 'nl'
-      ? "Neem contact op met Thias Consultancy voor al jouw ServiceNow vragen en projecten."
+      ? "Neem contact op met Thias Consultancy voor AI freelance België en ServiceNow freelance België projecten. Vrijblijvend gesprek voor implementatie en consultancy."
       : lang === 'en'
-      ? "Contact Thias Consultancy for all your ServiceNow questions and projects."
-      : "Contactez Thias Consultancy pour toutes vos questions et projets ServiceNow.",
+      ? "Contact Thias Consultancy for AI freelance Belgium and ServiceNow freelance Belgium projects. No-obligation consultation for implementation and consultancy."
+      : "Contactez Thias Consultancy pour projets IA freelance Belgique et ServiceNow freelance Belgique. Consultation sans engagement pour implémentation et conseil.",
+    keywords: lang === 'nl'
+      ? ["AI freelance België", "ServiceNow freelance België", "contact freelance consultant België"]
+      : lang === 'en'
+      ? ["AI freelance Belgium", "ServiceNow freelance Belgium", "contact freelance consultant Belgium"]
+      : ["IA freelance Belgique", "ServiceNow freelance Belgique", "contact freelance consultant Belgique"],
+    alternates: {
+      canonical: `https://www.thiasbv.com/${lang}/contact`,
+    },
   };
 }
 

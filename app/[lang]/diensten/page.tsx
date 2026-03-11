@@ -15,12 +15,20 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   const { lang } = await params;
   const t = getTranslations(lang);
   return {
-    title: lang === 'nl' ? "Diensten - Thias Consultancy" : lang === 'en' ? "Services - Thias Consultancy" : "Services - Thias Consultancy",
+    title: lang === 'nl' ? "Diensten - AI & ServiceNow Freelance België" : lang === 'en' ? "Services - AI & ServiceNow Freelance Belgium" : "Services - IA & ServiceNow Freelance Belgique",
     description: lang === 'nl' 
-      ? "Ontdek onze volledige range aan ServiceNow diensten: implementatie, procesoptimalisatie, training en meer."
+      ? "AI freelance België en ServiceNow freelance België diensten: AI implementatie, ServiceNow implementatie, procesoptimalisatie, Now Assist, training en meer."
       : lang === 'en'
-      ? "Discover our full range of ServiceNow services: implementation, process optimization, training and more."
-      : "Découvrez notre gamme complète de services ServiceNow : implémentation, optimisation des processus, formation et plus encore.",
+      ? "AI freelance Belgium and ServiceNow freelance Belgium services: AI implementation, ServiceNow implementation, process optimization, Now Assist, training and more."
+      : "Services IA freelance Belgique et ServiceNow freelance Belgique : implémentation IA, implémentation ServiceNow, optimisation des processus, Now Assist, formation et plus.",
+    keywords: lang === 'nl'
+      ? ["AI freelance België", "ServiceNow freelance België", "AI implementatie", "ServiceNow diensten"]
+      : lang === 'en'
+      ? ["AI freelance Belgium", "ServiceNow freelance Belgium", "AI implementation", "ServiceNow services"]
+      : ["IA freelance Belgique", "ServiceNow freelance Belgique", "implémentation IA", "services ServiceNow"],
+    alternates: {
+      canonical: `https://www.thiasbv.com/${lang}/diensten`,
+    },
   };
 }
 

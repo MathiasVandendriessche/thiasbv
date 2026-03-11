@@ -5,12 +5,20 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Lan
   const { lang } = await params;
   const t = getTranslations(lang);
   return {
-    title: lang === 'nl' ? "Ervaring - Thias Consultancy" : lang === 'en' ? "Experience - Thias Consultancy" : "Expérience - Thias Consultancy",
+    title: lang === 'nl' ? "Ervaring - AI & ServiceNow Freelance België" : lang === 'en' ? "Experience - AI & ServiceNow Freelance Belgium" : "Expérience - IA & ServiceNow Freelance Belgique",
     description: lang === 'nl'
-      ? "Ontdek de ervaring en expertise van Thias Consultancy in ServiceNow en IT Service Management."
+      ? "AI freelance België en ServiceNow freelance België: meer dan 20 jaar ervaring. Certificeringen, projecten bij Devoteam, Qinexo en anderen in België."
       : lang === 'en'
-      ? "Discover the experience and expertise of Thias Consultancy in ServiceNow and IT Service Management."
-      : "Découvrez l'expérience et l'expertise de Thias Consultancy dans ServiceNow et la gestion des services informatiques.",
+      ? "AI freelance Belgium and ServiceNow freelance Belgium: over 20 years of experience. Certifications, projects at Devoteam, Qinexo and others in Belgium."
+      : "IA freelance Belgique et ServiceNow freelance Belgique : plus de 20 ans d'expérience. Certifications, projets chez Devoteam, Qinexo et autres en Belgique.",
+    keywords: lang === 'nl'
+      ? ["AI freelance België", "ServiceNow freelance België", "ServiceNow ervaring", "freelance consultant België"]
+      : lang === 'en'
+      ? ["AI freelance Belgium", "ServiceNow freelance Belgium", "ServiceNow experience", "freelance consultant Belgium"]
+      : ["IA freelance Belgique", "ServiceNow freelance Belgique", "expérience ServiceNow", "consultant freelance Belgique"],
+    alternates: {
+      canonical: `https://www.thiasbv.com/${lang}/ervaring`,
+    },
   };
 }
 
