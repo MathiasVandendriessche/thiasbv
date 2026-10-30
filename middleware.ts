@@ -29,6 +29,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip all internal paths (_next)
-    '/((?!_next|api|favicon\.ico|icon|sitemap\.xml|robots\.txt).*)',
+    // Also skip static files from /public (anything with a file extension)
+    '/((?!_next|api|favicon\.ico|icon|sitemap\.xml|robots\.txt|.*\\.[a-zA-Z0-9]+$).*)',
   ],
 }

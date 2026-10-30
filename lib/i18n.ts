@@ -14,6 +14,7 @@ export const translations = {
       home: 'Home',
       services: 'Diensten',
       experience: 'Ervaring',
+      aiProjects: 'AI-projecten',
       contact: 'Contact',
     },
     hero: {
@@ -144,6 +145,7 @@ export const translations = {
       home: 'Home',
       services: 'Services',
       experience: 'Experience',
+      aiProjects: 'AI projects',
       contact: 'Contact',
     },
     hero: {
@@ -274,6 +276,7 @@ export const translations = {
       home: 'Accueil',
       services: 'Services',
       experience: 'Expérience',
+      aiProjects: 'Projets IA',
       contact: 'Contact',
     },
     hero: {

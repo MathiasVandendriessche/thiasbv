@@ -49,6 +49,14 @@ export default function Footer({ lang = 'nl' }: { lang?: Language }) {
               </li>
               <li>
                 <Link
+                  href={`/${lang}/ai-projecten`}
+                  className="text-gray-600 hover:text-primary-600 text-sm transition-colors"
+                >
+                  {t.nav.aiProjects}
+                </Link>
+              </li>
+              <li>
+                <Link
                   href={`/${lang}/contact`}
                   className="text-gray-600 hover:text-primary-600 text-sm transition-colors"
                 >
