@@ -19,7 +19,12 @@ export class MailError extends Error {
 interface MailDeps {
   fetch?: typeof fetch;
   env?: NodeJS.ProcessEnv;
+  /** Per-request time-out; defaults to GRAPH_TIMEOUT_MS. */
+  timeoutMs?: number;
 }
+
+/** A stalled Microsoft endpoint must never hang the API route. */
+export const GRAPH_TIMEOUT_MS = 10_000;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
 
@@ -43,7 +48,8 @@ function requireEnv(env: NodeJS.ProcessEnv) {
 
 async function requestToken(
   doFetch: typeof fetch,
-  cfg: ReturnType<typeof requireEnv>
+  cfg: ReturnType<typeof requireEnv>,
+  timeoutMs: number
 ): Promise<string> {
   let res: Response;
   try {
@@ -58,12 +64,14 @@ async function requestToken(
           client_id: cfg.clientId,
           client_secret: cfg.clientSecret,
         }).toString(),
+        signal: AbortSignal.timeout(timeoutMs),
       }
     );
   } catch {
     throw new MailError('token_failed');
   }
   if (!res.ok) throw new MailError('token_failed');
+  // A time-out while reading the body rejects here and maps to token_failed too.
   const data = (await res.json().catch(() => null)) as { access_token?: unknown } | null;
   if (!data || typeof data.access_token !== 'string' || !data.access_token) {
     throw new MailError('token_failed');
@@ -77,8 +85,9 @@ async function requestToken(
  */
 export async function sendMail(msg: MailMessage, deps: MailDeps = {}): Promise<void> {
   const doFetch = deps.fetch ?? fetch;
+  const timeoutMs = deps.timeoutMs ?? GRAPH_TIMEOUT_MS;
   const cfg = requireEnv(deps.env ?? process.env);
-  const token = await requestToken(doFetch, cfg);
+  const token = await requestToken(doFetch, cfg, timeoutMs);
 
   const message = {
     subject: msg.subject.replace(/[\r\n]+/g, ' '),
@@ -98,6 +107,7 @@ export async function sendMail(msg: MailMessage, deps: MailDeps = {}): Promise<v
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ message, saveToSentItems: false }),
+        signal: AbortSignal.timeout(timeoutMs),
       }
     );
   } catch {

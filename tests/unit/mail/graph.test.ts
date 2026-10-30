@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { isValidEmail, MailError, sendMail } from '@/lib/mail/graph';
+import { GRAPH_TIMEOUT_MS, isValidEmail, MailError, sendMail } from '@/lib/mail/graph';
 
 const env = {
   MS_TENANT_ID: 'tenant-1',
@@ -87,6 +87,46 @@ describe('sendMail', () => {
     await expect(
       sendMail(msg, { fetch: fetch as unknown as typeof globalThis.fetch, env })
     ).rejects.toMatchObject({ code: 'send_failed' });
+  });
+});
+
+describe('sendMail time-outs', () => {
+  /** A fetch that never answers, but honours its abort signal. */
+  const hanging = () =>
+    vi.fn(
+      (_url: string, init: RequestInit) =>
+        new Promise<Response>((_, reject) => {
+          init.signal?.addEventListener('abort', () => reject(init.signal?.reason));
+        }),
+    );
+
+  it('passes an abort signal to both requests', async () => {
+    const fetch = makeFetch();
+    await sendMail(msg, { fetch: fetch as unknown as typeof globalThis.fetch, env });
+    expect(fetch.mock.calls[0][1].signal).toBeInstanceOf(AbortSignal);
+    expect(fetch.mock.calls[1][1].signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it('maps a stalled token request to token_failed', async () => {
+    const fetch = hanging();
+    await expect(
+      sendMail(msg, { fetch: fetch as unknown as typeof globalThis.fetch, env, timeoutMs: 20 }),
+    ).rejects.toMatchObject({ code: 'token_failed' });
+  });
+
+  it('maps a stalled send request to send_failed', async () => {
+    const stall = hanging();
+    const fetch = vi
+      .fn()
+      .mockResolvedValueOnce(Response.json({ access_token: 'tok' }))
+      .mockImplementationOnce(stall);
+    await expect(
+      sendMail(msg, { fetch: fetch as unknown as typeof globalThis.fetch, env, timeoutMs: 20 }),
+    ).rejects.toMatchObject({ code: 'send_failed' });
+  });
+
+  it('defaults to a 10 s time-out', () => {
+    expect(GRAPH_TIMEOUT_MS).toBe(10_000);
   });
 });
 
