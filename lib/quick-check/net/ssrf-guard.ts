@@ -1,5 +1,5 @@
-import { lookup } from 'node:dns/promises';
 import { isIP, isIPv4, isIPv6 } from 'node:net';
+import { resolveAllAddresses } from './dns';
 
 /**
  * Protection against Server-Side Request Forgery for the public quick check.
@@ -147,10 +147,9 @@ export function isPrivateAddress(ip: string): boolean {
   return true;
 }
 
-/** Default resolver: the system resolver, all A/AAAA records. */
+/** Default resolver: all A and AAAA records via c-ares (see ./dns). */
 export async function resolveHost(host: string): Promise<string[]> {
-  const records = await lookup(host, { all: true });
-  return records.map((r) => r.address);
+  return resolveAllAddresses(host);
 }
 
 function stripBrackets(host: string): string {

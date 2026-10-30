@@ -1,5 +1,6 @@
-import dns from 'node:dns';
+import type dns from 'node:dns';
 import { EMAIL_MESSAGES as M } from '@/lib/quick-check/messages';
+import { getDnsResolver } from '@/lib/quick-check/net/dns';
 import type { CheckResult } from '@/lib/quick-check/types';
 
 /** Promise-based resolver (dns.promises.resolveTxt), so tests can inject a plain async function. */
@@ -58,7 +59,7 @@ async function lookupTxt(name: string, resolveTxt: ResolveTxt): Promise<string[]
 
 export async function checkEmail(
   domain: string,
-  resolveTxt: ResolveTxt = dns.promises.resolveTxt,
+  resolveTxt: ResolveTxt = (name) => getDnsResolver().resolveTxt(name),
 ): Promise<CheckResult> {
   try {
     const [root, dmarcRecords] = await Promise.all([

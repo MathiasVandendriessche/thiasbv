@@ -4,7 +4,14 @@ import { gradeCookies } from '@/lib/quick-check/checks/cookies';
 import { gradeHeaders } from '@/lib/quick-check/checks/headers';
 import { gradeTls } from '@/lib/quick-check/checks/tls';
 import { EMAIL_MESSAGES } from '@/lib/quick-check/messages';
-import { followRedirects, safeRequest, type NetDeps, type SafeResponse } from '@/lib/quick-check/net/safe-request';
+import { memoizeResolver } from '@/lib/quick-check/net/dns';
+import {
+  defaultNetDeps,
+  followRedirects,
+  safeRequest,
+  type NetDeps,
+  type SafeResponse,
+} from '@/lib/quick-check/net/safe-request';
 import { BlockedTargetError } from '@/lib/quick-check/net/ssrf-guard';
 import type { CheckResult, QuickCheckReport } from '@/lib/quick-check/types';
 
@@ -60,13 +67,16 @@ export async function runQuickCheck(domain: string, deps: RunDeps = {}): Promise
   const now = deps.now ?? (() => new Date());
   const deadline = Date.now() + TOTAL_TIMEOUT_MS;
   const unavailableEmail: CheckResult = { id: 'email', status: 'unavailable', messageKey: EMAIL_MESSAGES.unavailable };
+  // Each host is resolved once per check, however many requests go to it.
+  const baseNet = deps.net ?? defaultNetDeps;
+  const net: NetDeps = { ...baseNet, resolve: memoizeResolver(baseNet.resolve) };
 
   const [page, tlsProbe, httpRedirect, email] = await Promise.all([
     // Headers and cookies: the final response of the redirect chain.
-    settle(followRedirects(`https://${domain}/`, { method: 'GET', deadline, deps: deps.net }), deadline, null),
+    settle(followRedirects(`https://${domain}/`, { method: 'GET', deadline, deps: net }), deadline, null),
     // TLS: always the first https response (the chain may end on another host or on http).
-    settle(safeRequest(`https://${domain}/`, { method: 'HEAD', deadline, deps: deps.net }), deadline, null),
-    settle(probeHttpRedirect(domain, deadline, deps.net), deadline, null),
+    settle(safeRequest(`https://${domain}/`, { method: 'HEAD', deadline, deps: net }), deadline, null),
+    settle(probeHttpRedirect(domain, deadline, net), deadline, null),
     settle(checkEmail(domain, deps.resolveTxt), deadline, unavailableEmail),
   ]);
 

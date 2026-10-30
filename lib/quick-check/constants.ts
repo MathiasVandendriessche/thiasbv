@@ -74,3 +74,9 @@ export const MAIL_GLOBAL_LIMITS: readonly RateLimitWindow[] = Object.freeze([
 
 /** How often the shared limiters drop expired client-IP entries. */
 export const RATE_LIMIT_SWEEP_MS = 10 * MINUTE_MS;
+
+/**
+ * DNS resolver settings (c-ares, not the libuv thread pool): a query that gets
+ * no answer gives up after 1.5 s instead of occupying a worker thread.
+ */
+export const DNS_RESOLVER_OPTIONS = Object.freeze({ timeout: 1_500, tries: 1 });

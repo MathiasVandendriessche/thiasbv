@@ -106,6 +106,20 @@ describe('runQuickCheck', () => {
     expect(report.summary).toEqual({ ok: 1, total: 1 });
   });
 
+  it('resolves each host once per check', async () => {
+    const resolve = vi.fn(async () => ['93.184.216.34']);
+    const deps = net(
+      (req) =>
+        req.protocol === 'http:'
+          ? { status: 301, headers: { location: 'https://voorbeeld.be/' }, body: '' }
+          : okHttps(),
+      resolve,
+    );
+    await runQuickCheck('voorbeeld.be', { ...base, net: deps });
+    expect(resolve).toHaveBeenCalledTimes(1);
+    expect(resolve).toHaveBeenCalledWith('voorbeeld.be');
+  });
+
   it('turns unfinished parts into unavailable at the 12 s deadline', async () => {
     const never = net(() => new Promise<RawResponse>(() => {}));
     const neverTxt = (() => new Promise(() => {})) as never;
