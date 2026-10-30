@@ -293,28 +293,15 @@ Het contactformulier (en later de SecureScan-scanaanvraag) verstuurt e-mail via 
    - `MS_CLIENT_SECRET`
    - `MAIL_SENDER=m@thiasbv.com`
    - `MAIL_TO=m@thiasbv.com`
-   - `CLIENT_IP_HEADER` (zie de SecureScan-quick-check; de header die de proxy van Combell zet)
+   - `CLIENT_IP_HEADER=x-real-ip` (zie "Uitgaand verkeer en client-IP" hieronder)
 
 ## Uitgaand verkeer en client-IP (SecureScan quick check)
 
-### Bevindingen uit de documentatie (nog te bevestigen met de diag-route)
+Vastgesteld op 2026-10-30 met een tijdelijke diag-route (intussen verwijderd):
 
-- Combell Node.js: instance koppelen aan een Git-repository; daarna wijs je onder Websites & SSL de backend van het hostingpakket naar de Node.js-applicatie. Er staat niets over uitgaande verbindingen of een uitgaande firewall. Bron: https://www.combell.com/en/help/kb/getting-started-with-node-js/
-- De marketingpagina noemt "meerdere firewalls" en Combell Shield (bot/DDoS-filtering), zonder details over uitgaand verkeer. Bron: https://www.combell.com/en/hosting/nodejs
-- Combell gebruikt reverse proxies (Nginx, Varnish, HAProxy met PROXY-protocol); welke header het echte bezoekers-IP draagt en of die deterministisch het laatste item is, staat nergens expliciet. Bronnen: https://www.combell.com/en/technology/nginx, https://www.combell.com/en/blog/proxy-protocol-support-in-varnish/
-- Conclusie: niet gedocumenteerd. Alleen de diag-route hieronder kan dit vaststellen.
+- Uitgaand verkeer werkt: DNS (A en TXT), HTTPS en HTTP naar willekeurige hosts lukken vanuit de Node.js-app.
+- De site draait achter Cloudflare, daarna een proxy van Combell. Het laatste item van `X-Forwarded-For` is een IP van die Combell-proxy (`2a00:1c98:...`), niet de bezoeker. Gebruik die header dus niet.
+- `X-Real-IP` bevat precies het bezoekers-IP. Een zelf meegestuurde `X-Real-IP` of `X-Forwarded-For` wordt overschreven: zes checks met telkens een ander nep-IP gaven bij de zesde een 429 (alles telde op het echte IP).
+- Instelling in Combell: `CLIENT_IP_HEADER=x-real-ip`.
 
-### Diag-route (tijdelijk)
-
-`app/api/diag-outbound/route.ts` doet vaste testverzoeken (DNS, HTTPS, HTTP, DMARC-TXT) en toont de namen van alle request-headers plus `x-forwarded-for`, `x-real-ip`, `forwarded` en `x-client-ip`. Zonder correcte `?k=` geeft ze 404.
-
-Checklist voor Mathias:
-
-1. Zet in het Combell control panel de omgevingsvariabele `DIAG_KEY` op een lange willekeurige waarde.
-2. Deploy deze branch.
-3. Open `https://www.thiasbv.com/api/diag-outbound?k=<DIAG_KEY>` vanaf je eigen verbinding (kijk je eigen IP na, bv. via https://www.thiasbv.com of een "wat is mijn IP"-site).
-4. Controleer `probes`: alle vier moeten `ok: true` zijn. Zo niet, stop en meld de foutcodes (bv. `ENOTFOUND`, `ETIMEDOUT`): dan blokkeert Combell uitgaand verkeer.
-5. Kijk in `ipHeaders` welke header op jouw eigen IP eindigt, en of dat het laatste item is. Test eventueel nogmaals met een zelf meegestuurde `X-Forwarded-For: 9.9.9.9`-header om te zien of die voorop komt (goed) of de echte waarde vervangt.
-6. Zet `CLIENT_IP_HEADER` in Combell op die headernaam.
-7. **Controleer vóór je de quick check publiek maakt** dat het laatste item van `X-Forwarded-For` (of de gekozen header) echt jouw bezoekers-IP is, en niet het IP van een proxy van Combell. Anders delen alle bezoekers één rate-limit-teller: na een paar checks is de quick check dan voor iedereen geblokkeerd.
-8. Verwijder de route (`git rm app/api/diag-outbound/route.ts tests/unit/api/diag-outbound.test.ts`), verwijder `DIAG_KEY` in Combell (of vervang de waarde als je de route nog even houdt), deploy opnieuw, en noteer hier het resultaat. De sleutel stond in de URL en kan dus in access logs van de proxy staan: gebruik hem nergens anders.
+Wijzigt de hosting (andere proxy, Cloudflare uit), test dan opnieuw: stuur zes quick checks met een wisselende `X-Real-IP`-header. De zesde moet 429 geven.

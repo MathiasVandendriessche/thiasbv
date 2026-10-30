@@ -167,7 +167,7 @@ describe('POST /api/scan-request', () => {
     sendMock.mockRejectedValue(new MailError('send_failed'));
     const res = await POST(req(valid));
     expect(res.status).toBe(503);
-    expect(await res.json()).toEqual({ success: false, error: 'unavailable' });
+    expect(await res.json()).toEqual({ success: false, error: 'unavailable', detail: 'send_failed' });
     const logged = JSON.stringify(
       (['log', 'info', 'warn', 'error', 'debug'] as const).flatMap((m) =>
         vi.mocked(console[m]).mock.calls,
