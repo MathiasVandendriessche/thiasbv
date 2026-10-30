@@ -1,5 +1,8 @@
 import {
+  CONTACT_IP_LIMITS,
+  MAIL_GLOBAL_LIMITS,
   QUICK_CHECK_GLOBAL_LIMITS,
+  RATE_LIMIT_SWEEP_MS,
   QUICK_CHECK_IP_LIMITS,
   SCAN_REQUEST_IP_LIMITS,
   type RateLimitWindow,
@@ -17,6 +20,17 @@ export interface RateLimiter {
 
 const DEFAULT_MAX_KEYS = 10_000;
 
+export interface RateLimiterOptions {
+  maxKeys?: number;
+  /**
+   * When set, expired keys are also dropped on a timer (unref'd, so it never
+   * keeps the process alive). Without it, they are only dropped on the next
+   * hit() or size(). Used for the shared limiters, so a client IP is never
+   * kept longer than the longest window plus this interval.
+   */
+  sweepIntervalMs?: number;
+}
+
 /**
  * In-memory sliding-window limiter. Nothing is persisted, and keys (client
  * IPs) are never logged. A hit is allowed only if every window has room; only
@@ -24,7 +38,7 @@ const DEFAULT_MAX_KEYS = 10_000;
  */
 export function createRateLimiter(
   windows: readonly Window[],
-  opts: { maxKeys?: number } = {},
+  opts: RateLimiterOptions = {},
 ): RateLimiter {
   const maxKeys = opts.maxKeys ?? DEFAULT_MAX_KEYS;
   const longest = Math.max(0, ...windows.map((w) => w.ms));
@@ -37,6 +51,11 @@ export function createRateLimiter(
       if (newest !== undefined && now - newest <= longest) break;
       hits.delete(key);
     }
+  }
+
+  if (opts.sweepIntervalMs !== undefined && opts.sweepIntervalMs > 0) {
+    const timer = setInterval(() => sweep(Date.now()), opts.sweepIntervalMs);
+    timer.unref?.();
   }
 
   return {
@@ -79,13 +98,24 @@ export function getClientIp(
   headerName: string | undefined = process.env.CLIENT_IP_HEADER,
 ): string | null {
   const name = headerName?.trim() || 'x-forwarded-for';
-  const raw = headers.get(name);
+  let raw: string | null;
+  try {
+    raw = headers.get(name);
+  } catch {
+    // Invalid header name (misconfigured CLIENT_IP_HEADER): treat as absent.
+    return null;
+  }
   if (!raw || !raw.trim()) return null;
   const last = raw.split(',').pop()?.trim() ?? '';
   if (!last || last.length > MAX_IP_LENGTH) return null;
   return last;
 }
 
-export const quickCheckLimiter = createRateLimiter(QUICK_CHECK_IP_LIMITS);
-export const globalLimiter = createRateLimiter(QUICK_CHECK_GLOBAL_LIMITS);
-export const scanRequestLimiter = createRateLimiter(SCAN_REQUEST_IP_LIMITS);
+const shared = { sweepIntervalMs: RATE_LIMIT_SWEEP_MS } as const;
+
+export const quickCheckLimiter = createRateLimiter(QUICK_CHECK_IP_LIMITS, shared);
+export const globalLimiter = createRateLimiter(QUICK_CHECK_GLOBAL_LIMITS, shared);
+export const scanRequestLimiter = createRateLimiter(SCAN_REQUEST_IP_LIMITS, shared);
+export const contactLimiter = createRateLimiter(CONTACT_IP_LIMITS, shared);
+/** Shared by every route that sends mail; always hit with the key 'global'. */
+export const mailGlobalLimiter = createRateLimiter(MAIL_GLOBAL_LIMITS, shared);

@@ -56,3 +56,21 @@ export const QUICK_CHECK_GLOBAL_LIMITS: readonly RateLimitWindow[] = Object.free
 export const SCAN_REQUEST_IP_LIMITS: readonly RateLimitWindow[] = Object.freeze([
   { limit: 3, ms: HOUR_MS },
 ]);
+
+/** Contact form route, per client IP: 3 / hour. */
+export const CONTACT_IP_LIMITS: readonly RateLimitWindow[] = Object.freeze([
+  { limit: 3, ms: HOUR_MS },
+]);
+
+/**
+ * Every mail the site sends (contact form and scan request together):
+ * 20 / hour and 50 / day, so a flood can never exhaust the mailbox's
+ * sending limits.
+ */
+export const MAIL_GLOBAL_LIMITS: readonly RateLimitWindow[] = Object.freeze([
+  { limit: 20, ms: HOUR_MS },
+  { limit: 50, ms: DAY_MS },
+]);
+
+/** How often the shared limiters drop expired client-IP entries. */
+export const RATE_LIMIT_SWEEP_MS = 10 * MINUTE_MS;
