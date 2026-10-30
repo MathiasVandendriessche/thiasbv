@@ -15,6 +15,7 @@ export default function Header({ lang = 'nl' }: { lang?: Language }) {
     { name: t.nav.home, href: `/${lang}` },
     { name: t.nav.services, href: `/${lang}/diensten` },
     { name: t.nav.experience, href: `/${lang}/ervaring` },
+    { name: t.nav.aiProjects, href: `/${lang}/ai-projecten` },
     { name: t.nav.contact, href: `/${lang}/contact` },
   ];
 

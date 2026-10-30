@@ -11,7 +11,7 @@ Deze gids helpt je om je Next.js website te deployen op Combell Node.js hosting.
 - Combell hosting account met **Node.js hosting** (€1,99/maand)
 - Een Git repository (GitHub, GitLab, of Bitbucket) met je code
 - Toegang tot Combell Control Panel
-- Node.js versie 18.x of hoger (configureerbaar in Control Panel)
+- Node.js **20.19 of hoger, of 22.x** (configureerbaar in Control Panel). Lager werkt niet: `npm install` installeert ook de devDependencies (vite, vitest, Playwright), en die vereisen Node 20.19+ of 22
 - Website: https://www.combell.com/nl/
 
 ## Vereiste package.json Scripts
@@ -82,7 +82,7 @@ git push -u origin main
 4. **Configureer de instance:**
    - **Git Repository URL:** Voer de URL van je Git repository in (bijv. `https://github.com/jouw-username/thias-consultancy.git`)
    - **Branch:** Meestal `main` of `master`
-   - **Node.js Versie:** Selecteer versie 18.x of hoger
+   - **Node.js Versie:** Selecteer 22.x (of minstens 20.19)
    - **Toegang tot Git:** Je moet Combell toegang geven tot je repository:
      - **Public repository:** Geen extra configuratie nodig
      - **Private repository:** Je moet SSH keys of access tokens configureren (zie Combell documentatie)
@@ -181,7 +181,7 @@ Wanneer je wijzigingen maakt aan je website:
 **Oplossingen:**
 - Controleer de build logs in het Combell Control Panel voor specifieke errors
 - Test lokaal eerst: `npm run build` moet werken zonder errors
-- Controleer Node.js versie in Combell (moet 18+ zijn)
+- Controleer Node.js versie in Combell (moet 20.19+ of 22 zijn)
 - Zorg dat alle dependencies in `package.json` staan (inclusief devDependencies voor build)
 - Check voor TypeScript errors: `npm run lint`
 
@@ -269,3 +269,52 @@ Voor vragen over Combell specifieke configuratie, neem contact op met Combell su
 3. **Performance Monitoring**: Gebruik Combell's monitoring tools om je website performance te volgen
 4. **SSL**: Activeer altijd SSL voor je productie website (gratis via Let's Encrypt bij Combell)
 5. **CDN**: Overweeg Combell's CDN opties voor betere performance wereldwijd
+
+## E-mail via Microsoft Graph
+
+Het contactformulier (en later de SecureScan-scanaanvraag) verstuurt e-mail via Microsoft Graph, niet via SMTP. Eenmalige inrichting:
+
+1. **Entra** → App registrations → New registration (single tenant).
+2. **API permissions** → Microsoft Graph → Application permissions → `Mail.Send` → Grant admin consent.
+3. **Certificates & secrets** → New client secret. Noteer de vervaldatum en plan de vernieuwing.
+4. **Exchange Online PowerShell**: beperk de app tot de ene mailbox. Een application access policy werkt met een *mail-enabled security group*; maak er een met alleen `m@thiasbv.com` als lid:
+   ```powershell
+   Connect-ExchangeOnline
+   New-DistributionGroup -Name "Website mail app" -Alias website-mail-app -Type Security -Members m@thiasbv.com
+   Get-DistributionGroup website-mail-app | Select-Object PrimarySmtpAddress   # adres van de groep
+   New-ApplicationAccessPolicy -AppId <client-id> -PolicyScopeGroupId <adres-van-de-groep> -AccessRight RestrictAccess -Description "Website mail"
+   Test-ApplicationAccessPolicy -Identity m@thiasbv.com -AppId <client-id>
+   ```
+   `Test-ApplicationAccessPolicy` moet `Granted` teruggeven voor `m@thiasbv.com` (en `Denied` voor elke andere mailbox). Pas dan verder; een nieuwe policy kan tot een uur nodig hebben om actief te worden.
+   Let op: Microsoft raadt intussen *RBAC for Applications* in Exchange Online aan als nieuwere vervanger van application access policies; die werkt ook, maar deze gids gebruikt de policy hierboven.
+5. **Omgevingsvariabelen** instellen in het Combell control panel (nooit in code of repo):
+   - `MS_TENANT_ID`
+   - `MS_CLIENT_ID`
+   - `MS_CLIENT_SECRET`
+   - `MAIL_SENDER=m@thiasbv.com`
+   - `MAIL_TO=m@thiasbv.com`
+   - `CLIENT_IP_HEADER` (zie de SecureScan-quick-check; de header die de proxy van Combell zet)
+
+## Uitgaand verkeer en client-IP (SecureScan quick check)
+
+### Bevindingen uit de documentatie (nog te bevestigen met de diag-route)
+
+- Combell Node.js: instance koppelen aan een Git-repository; daarna wijs je onder Websites & SSL de backend van het hostingpakket naar de Node.js-applicatie. Er staat niets over uitgaande verbindingen of een uitgaande firewall. Bron: https://www.combell.com/en/help/kb/getting-started-with-node-js/
+- De marketingpagina noemt "meerdere firewalls" en Combell Shield (bot/DDoS-filtering), zonder details over uitgaand verkeer. Bron: https://www.combell.com/en/hosting/nodejs
+- Combell gebruikt reverse proxies (Nginx, Varnish, HAProxy met PROXY-protocol); welke header het echte bezoekers-IP draagt en of die deterministisch het laatste item is, staat nergens expliciet. Bronnen: https://www.combell.com/en/technology/nginx, https://www.combell.com/en/blog/proxy-protocol-support-in-varnish/
+- Conclusie: niet gedocumenteerd. Alleen de diag-route hieronder kan dit vaststellen.
+
+### Diag-route (tijdelijk)
+
+`app/api/diag-outbound/route.ts` doet vaste testverzoeken (DNS, HTTPS, HTTP, DMARC-TXT) en toont de namen van alle request-headers plus `x-forwarded-for`, `x-real-ip`, `forwarded` en `x-client-ip`. Zonder correcte `?k=` geeft ze 404.
+
+Checklist voor Mathias:
+
+1. Zet in het Combell control panel de omgevingsvariabele `DIAG_KEY` op een lange willekeurige waarde.
+2. Deploy deze branch.
+3. Open `https://www.thiasbv.com/api/diag-outbound?k=<DIAG_KEY>` vanaf je eigen verbinding (kijk je eigen IP na, bv. via https://www.thiasbv.com of een "wat is mijn IP"-site).
+4. Controleer `probes`: alle vier moeten `ok: true` zijn. Zo niet, stop en meld de foutcodes (bv. `ENOTFOUND`, `ETIMEDOUT`): dan blokkeert Combell uitgaand verkeer.
+5. Kijk in `ipHeaders` welke header op jouw eigen IP eindigt, en of dat het laatste item is. Test eventueel nogmaals met een zelf meegestuurde `X-Forwarded-For: 9.9.9.9`-header om te zien of die voorop komt (goed) of de echte waarde vervangt.
+6. Zet `CLIENT_IP_HEADER` in Combell op die headernaam.
+7. **Controleer vóór je de quick check publiek maakt** dat het laatste item van `X-Forwarded-For` (of de gekozen header) echt jouw bezoekers-IP is, en niet het IP van een proxy van Combell. Anders delen alle bezoekers één rate-limit-teller: na een paar checks is de quick check dan voor iedereen geblokkeerd.
+8. Verwijder de route (`git rm app/api/diag-outbound/route.ts tests/unit/api/diag-outbound.test.ts`), verwijder `DIAG_KEY` in Combell (of vervang de waarde als je de route nog even houdt), deploy opnieuw, en noteer hier het resultaat. De sleutel stond in de URL en kan dus in access logs van de proxy staan: gebruik hem nergens anders.

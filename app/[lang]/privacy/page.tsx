@@ -96,6 +96,15 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
             </ul>
 
             <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">
+              {t.privacy.scanTitle}
+            </h2>
+            <p className="text-gray-700 mb-4">{t.privacy.scanCheckText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanIpText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanRequestText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanLegalText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanContactText}</p>
+
+            <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">
               {t.privacy.cookiesTitle}
             </h2>
             <p className="text-gray-700 mb-4">

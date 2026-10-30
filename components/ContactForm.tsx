@@ -11,6 +11,7 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
     email: "",
     phone: "",
     message: "",
+    website: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -26,24 +27,21 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
         setSubmitted(true);
-        setFormData({ name: "", email: "", phone: "", message: "" });
+        setFormData({ name: "", email: "", phone: "", message: "", website: "" });
         setTimeout(() => {
           setSubmitted(false);
         }, 5000);
       } else {
-        alert(data.error || (lang === 'nl' ? 'Er is een fout opgetreden. Probeer het later opnieuw.' : lang === 'en' ? 'An error occurred. Please try again later.' : 'Une erreur s\'est produite. Veuillez réessayer plus tard.'));
+        alert(lang === 'nl' ? 'Er is een fout opgetreden. Probeer het later opnieuw.' : lang === 'en' ? 'An error occurred. Please try again later.' : 'Une erreur s\'est produite. Veuillez réessayer plus tard.');
       }
-    } catch (error) {
-      console.error('Form submission error:', error);
+    } catch {
       const errorMsg = lang === 'nl' 
-        ? 'Er is een fout opgetreden. Probeer het later opnieuw of neem direct contact op via info@thiasbv.com'
+        ? 'Er is een fout opgetreden. Probeer het later opnieuw of neem direct contact op via m@thiasbv.com'
         : lang === 'en'
-        ? 'An error occurred. Please try again later or contact us directly at info@thiasbv.com'
-        : 'Une erreur s\'est produite. Veuillez réessayer plus tard ou contactez-nous directement à info@thiasbv.com';
+        ? 'An error occurred. Please try again later or contact us directly at m@thiasbv.com'
+        : 'Une erreur s\'est produite. Veuillez réessayer plus tard ou contactez-nous directement à m@thiasbv.com';
       alert(errorMsg);
     }
   };
@@ -131,6 +129,22 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
           onChange={handleChange}
           className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 resize-none bg-white hover:border-gray-400"
           placeholder={t.contact.form.messagePlaceholder}
+        />
+      </div>
+
+      {/* Honeypot: invisible for people, bots tend to fill it in. */}
+      <div aria-hidden="true" className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden">
+        <label htmlFor="contact-website">
+          {lang === 'nl' ? 'Laat dit veld leeg' : lang === 'en' ? 'Leave this field empty' : 'Laissez ce champ vide'}
+        </label>
+        <input
+          type="text"
+          id="contact-website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={formData.website}
+          onChange={handleChange}
         />
       </div>
 
