@@ -290,3 +290,26 @@ Het contactformulier (en later de SecureScan-scanaanvraag) verstuurt e-mail via 
    - `MAIL_SENDER=m@thiasbv.com`
    - `MAIL_TO=m@thiasbv.com`
    - `CLIENT_IP_HEADER` (zie de SecureScan-quick-check; de header die de proxy van Combell zet)
+
+## Uitgaand verkeer en client-IP (SecureScan quick check)
+
+### Bevindingen uit de documentatie (nog te bevestigen met de diag-route)
+
+- Combell Node.js: instance koppelen aan een Git-repository; daarna wijs je onder Websites & SSL de backend van het hostingpakket naar de Node.js-applicatie. Er staat niets over uitgaande verbindingen of een uitgaande firewall. Bron: https://www.combell.com/en/help/kb/getting-started-with-node-js/
+- De marketingpagina noemt "meerdere firewalls" en Combell Shield (bot/DDoS-filtering), zonder details over uitgaand verkeer. Bron: https://www.combell.com/en/hosting/nodejs
+- Combell gebruikt reverse proxies (Nginx, Varnish, HAProxy met PROXY-protocol); welke header het echte bezoekers-IP draagt en of die deterministisch het laatste item is, staat nergens expliciet. Bronnen: https://www.combell.com/en/technology/nginx, https://www.combell.com/en/blog/proxy-protocol-support-in-varnish/
+- Conclusie: niet gedocumenteerd. Alleen de diag-route hieronder kan dit vaststellen.
+
+### Diag-route (tijdelijk)
+
+`app/api/diag-outbound/route.ts` doet vaste testverzoeken (DNS, HTTPS, HTTP, DMARC-TXT) en toont de namen van alle request-headers plus `x-forwarded-for`, `x-real-ip`, `forwarded` en `x-client-ip`. Zonder correcte `?k=` geeft ze 404.
+
+Checklist voor Mathias:
+
+1. Zet in het Combell control panel de omgevingsvariabele `DIAG_KEY` op een lange willekeurige waarde.
+2. Deploy deze branch.
+3. Open `https://www.thiasbv.com/api/diag-outbound?k=<DIAG_KEY>` vanaf je eigen verbinding (kijk je eigen IP na, bv. via https://www.thiasbv.com of een "wat is mijn IP"-site).
+4. Controleer `probes`: alle vier moeten `ok: true` zijn. Zo niet, stop en meld de foutcodes (bv. `ENOTFOUND`, `ETIMEDOUT`): dan blokkeert Combell uitgaand verkeer.
+5. Kijk in `ipHeaders` welke header op jouw eigen IP eindigt, en of dat het laatste item is. Test eventueel nogmaals met een zelf meegestuurde `X-Forwarded-For: 9.9.9.9`-header om te zien of die voorop komt (goed) of de echte waarde vervangt.
+6. Zet `CLIENT_IP_HEADER` in Combell op die headernaam.
+7. Verwijder de route (`git rm app/api/diag-outbound/route.ts tests/unit/api/diag-outbound.test.ts`), verwijder `DIAG_KEY` in Combell, deploy opnieuw, en noteer hier het resultaat.
