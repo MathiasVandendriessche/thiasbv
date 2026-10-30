@@ -21,7 +21,7 @@
 - Mail through Microsoft Graph, sender and recipient both `m@thiasbv.com`. Secrets live only in env vars `MS_TENANT_ID`, `MS_CLIENT_ID`, `MS_CLIENT_SECRET`, `MAIL_SENDER`, `MAIL_TO`. Never in code or the repo.
 - The client IP comes only from the header set by Combell's own proxy (last entry), configured via `CLIENT_IP_HEADER`. Never use a value the visitor can choose.
 - All copy in NL, EN and FR, in the tone of the existing page. Statuses are good / let op / probleem, each with one sentence. Below every result: "this is a limited public check, not a full scan".
-- No client names (e.g. Fluvius) in copy. Use anonymized wording.
+- No client names in copy. Use anonymized wording.
 - Build and test in a copy outside iCloud (`node_modules` in the project folder is "dataless"): rsync to `$SCRATCH/site` without `node_modules .next .git .superpowers .claude`, then `npm ci`. All `npx` commands below run there. Edit and commit in the project folder itself.
 - Do not commit `.claude/` or the existing change to `package-lock.json`, except for lockfile changes caused by the new devDependencies in Task 1.
 
