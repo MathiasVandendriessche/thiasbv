@@ -80,6 +80,23 @@ describe('POST /api/quick-check', () => {
     expect(runMock).not.toHaveBeenCalled();
   });
 
+  it('rejects a huge streamed body without content-length', async () => {
+    const stream = new ReadableStream<Uint8Array>({
+      pull(c) {
+        c.enqueue(new Uint8Array(512));
+      },
+    });
+    const r = new NextRequest('http://localhost/api/quick-check', {
+      method: 'POST',
+      body: stream,
+      duplex: 'half',
+    } as ConstructorParameters<typeof NextRequest>[1]);
+    r.headers.delete('content-length');
+    const res = await POST(r);
+    expect(res.status).toBe(400);
+    expect(runMock).not.toHaveBeenCalled();
+  });
+
   it('does not count invalid input against the rate limit', async () => {
     const ip = freshIp();
     for (let i = 0; i < 6; i++) await POST(req({ domain: 'nope' }, ip));
@@ -96,9 +113,13 @@ describe('POST /api/quick-check', () => {
   });
 
   it('returns 429 when the global limit is reached', async () => {
-    vi.spyOn(globalLimiter, 'hit').mockReturnValue(false);
+    const globalHit = vi.spyOn(globalLimiter, 'hit').mockReturnValue(false);
+    const ipHit = vi.spyOn(quickCheckLimiter, 'hit');
     const res = await POST(req({ domain: 'voorbeeld.be' }));
     expect(res.status).toBe(429);
+    expect(globalHit).toHaveBeenCalledWith('global');
+    expect(ipHit).toHaveBeenCalledTimes(1);
+    expect(ipHit.mock.invocationCallOrder[0]).toBeLessThan(globalHit.mock.invocationCallOrder[0]);
     expect(runMock).not.toHaveBeenCalled();
   });
 

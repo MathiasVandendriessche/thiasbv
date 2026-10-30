@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { normalizeDomain } from '@/lib/quick-check/domain';
 import { BlockedTargetError } from '@/lib/quick-check/net/ssrf-guard';
 import { getClientIp, globalLimiter, quickCheckLimiter } from '@/lib/quick-check/rate-limit';
+import { readJsonBody } from '@/lib/http/read-json-body';
 import { runQuickCheck, type QuickCheckReport } from '@/lib/quick-check/run';
 
 export const runtime = 'nodejs';
@@ -18,19 +19,10 @@ function respond(body: Envelope, status: number) {
 
 const fail = (error: ErrorCode, status: number) => respond({ success: false, error }, status);
 
-/** Reads and parses the JSON body; null when it is too large or not JSON. */
-async function readBody(request: NextRequest): Promise<unknown> {
-  try {
-    const text = await request.text();
-    if (Buffer.byteLength(text) > MAX_BODY_BYTES) return null;
-    return JSON.parse(text);
-  } catch {
-    return null;
-  }
-}
-
 export async function POST(request: NextRequest) {
-  const body = await readBody(request);
+  const read = await readJsonBody(request, MAX_BODY_BYTES);
+  if (!read.ok) return fail('invalid_domain', 400);
+  const body = read.value;
   if (typeof body !== 'object' || body === null || Array.isArray(body)) {
     return fail('invalid_domain', 400);
   }
