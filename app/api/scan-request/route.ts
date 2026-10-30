@@ -14,7 +14,8 @@ const LANGS = ['nl', 'en', 'fr'] as const;
 
 type Lang = (typeof LANGS)[number];
 type ErrorCode = 'invalid' | 'rate_limited' | 'unavailable';
-type Envelope = { success: true } | { success: false; error: ErrorCode };
+// TEMPORARY: `detail` carries the fixed MailError code while the Combell mail setup is debugged. Remove afterwards.
+type Envelope = { success: true } | { success: false; error: ErrorCode; detail?: string };
 
 function respond(body: Envelope, status: number) {
   return NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
@@ -86,7 +87,8 @@ export async function POST(request: NextRequest) {
     });
     return respond({ success: true }, 200);
   } catch (err) {
-    console.error(`scan-request: ${err instanceof MailError ? err.code : 'unknown'}`);
-    return fail('unavailable', 503);
+    const code = err instanceof MailError ? err.code : 'unknown';
+    console.error(`scan-request: ${code}`);
+    return respond({ success: false, error: 'unavailable', detail: code }, 503);
   }
 }
