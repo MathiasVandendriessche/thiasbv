@@ -6,9 +6,11 @@ import ProjectShowcase from "@/components/ai-projects/ProjectShowcase";
 import EnergyFlowDiagram from "@/components/ai-projects/EnergyFlowDiagram";
 import KnowledgeBase from "@/components/ai-projects/KnowledgeBase";
 import NovaPanel from "@/components/ai-projects/NovaPanel";
+import QuickCheck from "@/components/ai-projects/QuickCheck";
 import SkillGrid from "@/components/ai-projects/SkillGrid";
 import { getAiProjectsContent } from "@/lib/ai-projects";
 import type { Language } from "@/lib/i18n";
+import { getQuickCheckCopy } from "@/lib/quick-check/copy";
 
 interface PageProps {
   params: Promise<{ lang: Language }>;
@@ -85,6 +87,12 @@ export default async function AiProjectenPage({ params }: PageProps) {
           project={c.projects.energy}
           highlightsLabel={c.highlightsLabel}
           media={<EnergyFlowDiagram labels={c.energyDiagram} />}
+        />
+        <ProjectShowcase
+          project={c.projects.securescan}
+          highlightsLabel={c.highlightsLabel}
+          media={<QuickCheck lang={lang} copy={getQuickCheckCopy(lang)} />}
+          reversed
         />
       </div>
 

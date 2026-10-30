@@ -8,3 +8,11 @@ export interface CheckResult {
   messageKey: string;
   params?: Record<string, string | number>;
 }
+
+export interface QuickCheckReport {
+  domain: string;
+  checkedAt: string;
+  results: CheckResult[];
+  /** total excludes parts with status 'unavailable'. */
+  summary: { ok: number; total: number };
+}

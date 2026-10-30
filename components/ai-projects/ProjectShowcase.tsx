@@ -49,7 +49,7 @@ export default function ProjectShowcase({
         </div>
 
         <h3 className="mt-8 text-sm font-semibold uppercase tracking-wider text-gray-900">
-          {highlightsLabel}
+          {project.highlightsLabel ?? highlightsLabel}
         </h3>
         <ul className="mt-3 space-y-2.5">
           {project.highlights.map((item) => (

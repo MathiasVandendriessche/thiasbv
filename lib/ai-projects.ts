@@ -7,6 +7,8 @@ export interface AiProject {
   description: string[];
   highlights: string[];
   tags: string[];
+  /** Overrides the page-wide highlights heading for this project. */
+  highlightsLabel?: string;
 }
 
 export interface AiSkill {
@@ -36,6 +38,7 @@ export interface AiProjectsContent {
     servicenow: AiProject;
     coach: AiProject;
     energy: AiProject;
+    securescan: AiProject;
   };
   nova: {
     badge: string;
@@ -157,6 +160,23 @@ const content: Record<Language, AiProjectsContent> = {
           "Volgt vorm, herstel en slaagkans op het doel",
         ],
         tags: ["Agents", "Garmin", "Dashboard", "Voeding"],
+      },
+      securescan: {
+        id: "securescan",
+        title: "SecureScan",
+        tagline: "Een geautomatiseerde webpentest, met een rapport dat je zonder IT-kennis leest.",
+        description: [
+          "SecureScan is mijn eigen product: een geautomatiseerde pentest voor websites. 23 modules testen onder meer het certificaat, de beveiligingsheaders, cookies, e-mailbeveiliging, verouderde software en gelekte gegevens.",
+          "Het resultaat is een Nederlandstalig rapport voor KMO's: wat er mis is, hoe ernstig het is en wat je eraan doet. Een volledige scan gebeurt altijd met schriftelijke toestemming, want een site scannen zonder toestemming mag niet.",
+        ],
+        highlightsLabel: "Wat de scan doet",
+        highlights: [
+          "Test je website met 23 modules, van certificaat tot verouderde software",
+          "Zet de bevindingen om in een helder rapport, gerangschikt op ernst",
+          "Legt per probleem uit wat je eraan kunt doen",
+          "Scant alleen met schriftelijke toestemming van de eigenaar",
+        ],
+        tags: ["Node.js", "23 modules", "Rapport voor KMO's", "Webbeveiliging"],
       },
     },
     nova: {
@@ -289,6 +309,23 @@ const content: Record<Language, AiProjectsContent> = {
         ],
         tags: ["Agents", "Garmin", "Dashboard", "Nutrition"],
       },
+      securescan: {
+        id: "securescan",
+        title: "SecureScan",
+        tagline: "An automated web pentest, with a report you can read without IT knowledge.",
+        description: [
+          "SecureScan is my own product: an automated penetration test for websites. 23 modules test, among other things, the certificate, security headers, cookies, email security, outdated software and leaked data.",
+          "The result is a report in Dutch written for SMEs: what is wrong, how serious it is and what to do about it. A full scan always happens with written consent, because scanning a site without permission is not allowed.",
+        ],
+        highlightsLabel: "What the scan does",
+        highlights: [
+          "Tests your website with 23 modules, from certificate to outdated software",
+          "Turns the findings into a clear report, ranked by severity",
+          "Explains for every issue what you can do about it",
+          "Only scans with the owner's written consent",
+        ],
+        tags: ["Node.js", "23 modules", "Report for SMEs", "Web security"],
+      },
     },
     nova: {
       badge: "In development",
@@ -419,6 +456,23 @@ const content: Record<Language, AiProjectsContent> = {
           "Suit la forme, la récupération et les chances d'atteindre l'objectif",
         ],
         tags: ["Agents", "Garmin", "Tableau de bord", "Alimentation"],
+      },
+      securescan: {
+        id: "securescan",
+        title: "SecureScan",
+        tagline: "Un pentest web automatisé, avec un rapport lisible sans connaissances informatiques.",
+        description: [
+          "SecureScan est mon propre produit : un test d'intrusion automatisé pour sites web. 23 modules testent notamment le certificat, les en-têtes de sécurité, les cookies, la sécurité e-mail, les logiciels obsolètes et les données exposées.",
+          "Le résultat est un rapport en néerlandais conçu pour les PME : ce qui ne va pas, la gravité et ce qu'il faut faire. Un scan complet se fait toujours avec un accord écrit, car scanner un site sans autorisation est interdit.",
+        ],
+        highlightsLabel: "Ce que fait le scan",
+        highlights: [
+          "Teste votre site avec 23 modules, du certificat aux logiciels obsolètes",
+          "Transforme les constats en un rapport clair, classé par gravité",
+          "Explique pour chaque problème ce que vous pouvez faire",
+          "Ne scanne qu'avec l'accord écrit du propriétaire",
+        ],
+        tags: ["Node.js", "23 modules", "Rapport pour PME", "Sécurité web"],
       },
     },
     nova: {

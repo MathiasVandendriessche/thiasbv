@@ -6,14 +6,9 @@ import { gradeTls } from '@/lib/quick-check/checks/tls';
 import { EMAIL_MESSAGES } from '@/lib/quick-check/messages';
 import { followRedirects, safeRequest, type NetDeps, type SafeResponse } from '@/lib/quick-check/net/safe-request';
 import { BlockedTargetError } from '@/lib/quick-check/net/ssrf-guard';
-import type { CheckResult } from '@/lib/quick-check/types';
+import type { CheckResult, QuickCheckReport } from '@/lib/quick-check/types';
 
-export interface QuickCheckReport {
-  domain: string;
-  checkedAt: string;
-  results: CheckResult[];
-  summary: { ok: number; total: number };
-}
+export type { QuickCheckReport };
 
 export interface RunDeps {
   net?: NetDeps;
