@@ -18,13 +18,17 @@ describe('normalizeDomain', () => {
     it('converts IDN to punycode', () => {
       expect(normalizeDomain('müller.be')).toEqual(ok('xn--mller-kva.be'));
     });
+    it('ignores :// inside the path or query', () => {
+      expect(normalizeDomain('voorbeeld.be/path?redirect=https://x.be')).toEqual(ok('voorbeeld.be'));
+    });
     it('accepts a path without scheme', () => {
       expect(normalizeDomain('voorbeeld.be/pad')).toEqual(ok('voorbeeld.be'));
     });
   });
 
   describe('ports', () => {
-    it.each(['voorbeeld.be:8443', 'https://voorbeeld.be:443', 'http://voorbeeld.be:80', 'voorbeeld.be:80/x'])(
+    it.each(['voorbeeld.be:8443', 'https://voorbeeld.be:443', 'http://voorbeeld.be:80', 'voorbeeld.be:80/x',
+      '//voorbeeld.be:8443', '//voorbeeld.be:443', 'https:///voorbeeld.be:8443'])(
       '%s is port_not_allowed',
       (input) => {
         expect(normalizeDomain(input)).toEqual(fail('port_not_allowed'));

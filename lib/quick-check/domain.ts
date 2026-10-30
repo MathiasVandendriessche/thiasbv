@@ -28,11 +28,13 @@ const INTERNAL_SUFFIXES = [
   'home',
 ];
 
+const SCHEME_PREFIX = /^([a-z][a-z0-9+.-]*):\/\//i;
+
 const fail = (reason: DomainFailure): DomainResult => ({ ok: false, reason });
 
 /** Authority part of `scheme://authority/...` (or of a bare `authority/...`). */
 function extractAuthority(input: string): string {
-  const afterScheme = input.includes('://') ? input.slice(input.indexOf('://') + 3) : input;
+  const afterScheme = input.replace(SCHEME_PREFIX, '').replace(/^[/\\]+/, '');
   return afterScheme.split(/[/\\?#]/, 1)[0];
 }
 
@@ -56,8 +58,9 @@ export function normalizeDomain(input: unknown): DomainResult {
   if (trimmed === '') return fail('empty');
   if (trimmed.length > MAX_INPUT_LENGTH) return fail('too_long');
 
-  const hasScheme = trimmed.includes('://');
-  if (hasScheme && !/^https?:\/\//i.test(trimmed)) return fail('invalid');
+  const scheme = SCHEME_PREFIX.exec(trimmed);
+  const hasScheme = scheme !== null;
+  if (hasScheme && !/^https?$/i.test(scheme[1])) return fail('invalid');
 
   const authority = extractAuthority(trimmed);
   if (authority.includes('@')) return fail('invalid');
@@ -70,6 +73,7 @@ export function normalizeDomain(input: unknown): DomainResult {
     return fail('invalid');
   }
   if (url.username || url.password) return fail('invalid');
+  if (url.port !== '') return fail('port_not_allowed');
 
   const rawHost = url.hostname.replace(/^\[|\]$/g, '');
   if (isIP(rawHost) !== 0 || isIP(rawHost.replace(/\.$/, '')) !== 0) return fail('ip_not_allowed');
