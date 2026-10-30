@@ -40,10 +40,10 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
     } catch (error) {
       console.error('Form submission error:', error);
       const errorMsg = lang === 'nl' 
-        ? 'Er is een fout opgetreden. Probeer het later opnieuw of neem direct contact op via info@thiasbv.com'
+        ? 'Er is een fout opgetreden. Probeer het later opnieuw of neem direct contact op via m@thiasbv.com'
         : lang === 'en'
-        ? 'An error occurred. Please try again later or contact us directly at info@thiasbv.com'
-        : 'Une erreur s\'est produite. Veuillez réessayer plus tard ou contactez-nous directement à info@thiasbv.com';
+        ? 'An error occurred. Please try again later or contact us directly at m@thiasbv.com'
+        : 'Une erreur s\'est produite. Veuillez réessayer plus tard ou contactez-nous directement à m@thiasbv.com';
       alert(errorMsg);
     }
   };

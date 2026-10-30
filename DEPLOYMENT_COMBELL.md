@@ -269,3 +269,24 @@ Voor vragen over Combell specifieke configuratie, neem contact op met Combell su
 3. **Performance Monitoring**: Gebruik Combell's monitoring tools om je website performance te volgen
 4. **SSL**: Activeer altijd SSL voor je productie website (gratis via Let's Encrypt bij Combell)
 5. **CDN**: Overweeg Combell's CDN opties voor betere performance wereldwijd
+
+## E-mail via Microsoft Graph
+
+Het contactformulier (en later de SecureScan-scanaanvraag) verstuurt e-mail via Microsoft Graph, niet via SMTP. Eenmalige inrichting:
+
+1. **Entra** → App registrations → New registration (single tenant).
+2. **API permissions** → Microsoft Graph → Application permissions → `Mail.Send` → Grant admin consent.
+3. **Certificates & secrets** → New client secret. Noteer de vervaldatum en plan de vernieuwing.
+4. **Exchange Online PowerShell**: beperk de app tot de ene mailbox:
+   ```powershell
+   New-ApplicationAccessPolicy -AppId <client-id> -PolicyScopeGroupId m@thiasbv.com -AccessRight RestrictAccess -Description "Website mail"
+   Test-ApplicationAccessPolicy -Identity m@thiasbv.com -AppId <client-id>
+   ```
+   `Test-ApplicationAccessPolicy` moet `Granted` teruggeven.
+5. **Omgevingsvariabelen** instellen in het Combell control panel (nooit in code of repo):
+   - `MS_TENANT_ID`
+   - `MS_CLIENT_ID`
+   - `MS_CLIENT_SECRET`
+   - `MAIL_SENDER=m@thiasbv.com`
+   - `MAIL_TO=m@thiasbv.com`
+   - `CLIENT_IP_HEADER` (zie de SecureScan-quick-check; de header die de proxy van Combell zet)
