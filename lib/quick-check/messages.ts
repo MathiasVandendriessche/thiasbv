@@ -10,6 +10,7 @@ export const TLS_MESSAGES = {
   unreadableExpiry: 'tls.unreadableExpiry',
   oldProtocol: 'tls.oldProtocol',
   noHttpsRedirect: 'tls.noHttpsRedirect',
+  noHttps: 'tls.noHttps',
   unavailable: 'tls.unavailable',
 } as const;
 

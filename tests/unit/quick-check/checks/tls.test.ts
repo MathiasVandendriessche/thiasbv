@@ -27,9 +27,14 @@ describe('gradeTls', () => {
     expect(r).toMatchObject({ id: 'tls', status: 'good', messageKey: 'tls.good', params: { days: 90 } });
   });
 
-  it('is unavailable when HTTPS is unreachable or has no TLS info', () => {
-    expect(grade(null).status).toBe('unavailable');
+  it('is unavailable when neither HTTPS nor port 80 answered, or there is no TLS info', () => {
+    expect(grade(null, null)).toMatchObject({ status: 'unavailable', messageKey: 'tls.unavailable' });
     expect(grade({ ...https(), tlsInfo: undefined }).status).toBe('unavailable');
+  });
+
+  it('is bad when HTTPS fails but port 80 answers (HTTP-only site)', () => {
+    expect(grade(null, false)).toMatchObject({ id: 'tls', status: 'bad', messageKey: 'tls.noHttps' });
+    expect(grade(null, true)).toMatchObject({ status: 'bad', messageKey: 'tls.noHttps' });
   });
 
   it('warns with days when the cert expires in 10 days', () => {
@@ -77,7 +82,8 @@ describe('gradeTls', () => {
 
   it('only returns known message keys', () => {
     const cases = [
-      grade(null),
+      grade(null, null),
+      grade(null, false),
       grade(https()),
       grade(https({ validTo: validTo(5) })),
       grade(https({ validTo: validTo(-1) })),

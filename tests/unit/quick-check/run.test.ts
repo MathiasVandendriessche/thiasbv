@@ -86,10 +86,20 @@ describe('runQuickCheck', () => {
     expect(report.results[0].status).toBe('warn');
   });
 
-  it('marks tls/headers/cookies unavailable when port 443 is refused, email still graded', async () => {
+  it('grades TLS bad for an HTTP-only site (443 refused, port 80 answers), never green', async () => {
     const deps = net((req) => {
       if (req.protocol === 'https:') throw new Error('refused');
       return { status: 200, headers: {}, body: '' };
+    });
+    const report = await runQuickCheck('voorbeeld.be', { ...base, net: deps });
+    expect(report.results[0]).toMatchObject({ id: 'tls', status: 'bad', messageKey: 'tls.noHttps' });
+    expect(report.results.map((r) => r.status)).toEqual(['bad', 'unavailable', 'unavailable', 'good']);
+    expect(report.summary).toEqual({ ok: 1, total: 2 });
+  });
+
+  it('marks tls/headers/cookies unavailable when both 443 and 80 fail, email still graded', async () => {
+    const deps = net(() => {
+      throw new Error('refused');
     });
     const report = await runQuickCheck('voorbeeld.be', { ...base, net: deps });
     expect(report.results.map((r) => r.status)).toEqual(['unavailable', 'unavailable', 'unavailable', 'good']);

@@ -6,6 +6,7 @@ const DAY_MS = 86_400_000;
 const WARN_DAYS = 21;
 
 export interface TlsInput {
+  /** null = the https request failed (network, TLS handshake, time-out). */
   https: SafeResponse | null;
   /** null = port 80 unreachable/unknown: no penalty. false = HTTP served without redirect. */
   httpRedirectsToHttps: boolean | null;
@@ -23,6 +24,8 @@ function isModernProtocol(protocol: string): boolean {
 }
 
 export function gradeTls({ https, httpRedirectsToHttps, now }: TlsInput): CheckResult {
+  // Port 80 answered but https did not: the site is (only) served unencrypted.
+  if (!https && httpRedirectsToHttps !== null) return result('bad', M.noHttps);
   const info = https?.tlsInfo;
   if (!https || !info) return result('unavailable', M.unavailable);
 

@@ -68,6 +68,8 @@ const nl: QuickCheckCopy = {
     "tls.oldProtocol": "De server gebruikt een verouderde TLS-versie. Versie 1.2 of hoger is de norm.",
     "tls.noHttpsRedirect":
       "HTTPS werkt (nog {days} dagen geldig), maar de onbeveiligde http-versie stuurt niet door naar https.",
+    "tls.noHttps":
+      "Je site is niet bereikbaar via HTTPS: bezoekers en formulieren gaan onversleuteld over het internet.",
     "tls.unavailable": "We konden HTTPS niet controleren: de site gaf via https geen bruikbaar antwoord.",
     "headers.good": "Alle zes gecontroleerde beveiligingsheaders zijn aanwezig.",
     "headers.missing": "Je site stuurt {count} van de 6 beveiligingsheaders niet mee: {missing}.",
@@ -148,6 +150,8 @@ const en: QuickCheckCopy = {
     "tls.oldProtocol": "The server uses an outdated TLS version. Version 1.2 or higher is the standard.",
     "tls.noHttpsRedirect":
       "HTTPS works (valid for another {days} days), but the unsecured http version does not redirect to https.",
+    "tls.noHttps":
+      "Your site is not reachable over HTTPS: visitors and forms travel across the internet unencrypted.",
     "tls.unavailable": "We could not check HTTPS: the site gave no usable answer over https.",
     "headers.good": "All six security headers we check are present.",
     "headers.missing": "Your site does not send {count} of the 6 security headers: {missing}.",
@@ -228,6 +232,8 @@ const fr: QuickCheckCopy = {
     "tls.oldProtocol": "Le serveur utilise une version TLS obsolète. La version 1.2 ou plus est la norme.",
     "tls.noHttpsRedirect":
       "HTTPS fonctionne (encore valable {days} jours), mais la version http non sécurisée ne redirige pas vers https.",
+    "tls.noHttps":
+      "Votre site n'est pas accessible en HTTPS : les visiteurs et les formulaires transitent sur internet sans chiffrement.",
     "tls.unavailable": "Nous n'avons pas pu vérifier HTTPS : le site n'a pas donné de réponse exploitable en https.",
     "headers.good": "Les six en-têtes de sécurité contrôlés sont présents.",
     "headers.missing": "Votre site n'envoie pas {count} des 6 en-têtes de sécurité : {missing}.",
