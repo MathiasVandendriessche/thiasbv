@@ -18,9 +18,13 @@ const REPORT = {
 };
 
 async function mockQuickCheck(page: Page, body: unknown, status = 200) {
-  await page.route('**/api/quick-check', (route) =>
-    route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) }),
-  );
+  await page.route('**/api/quick-check', (route) => {
+    // The real route answers 415 to anything but JSON.
+    if (!/^application\/json/i.test(route.request().headers()['content-type'] ?? '')) {
+      return route.fulfill({ status: 415, contentType: 'application/json', body: '{}' });
+    }
+    return route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) });
+  });
 }
 
 async function runCheck(page: Page) {
@@ -54,10 +58,12 @@ test('shows rate limit message', async ({ page }) => {
 test('requests a full scan', async ({ page }) => {
   let scanRequests = 0;
   let scanBody: Record<string, unknown> | null = null;
+  let scanType = '';
   await mockQuickCheck(page, REPORT);
   await page.route('**/api/scan-request', (route) => {
     scanRequests += 1;
     scanBody = route.request().postDataJSON();
+    scanType = route.request().headers()['content-type'] ?? '';
     return route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -83,6 +89,7 @@ test('requests a full scan', async ({ page }) => {
   await expect(page.getByText(/Bedankt! Je aanvraag is verstuurd/)).toBeVisible();
   expect(scanRequests).toBe(1);
   expect(scanBody).toMatchObject({ consent: true, domain: DOMAIN });
+  expect(scanType).toMatch(/^application\/json/i);
 });
 
 test('works in English', async ({ page }) => {
