@@ -95,6 +95,15 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
               <li>{lang === 'nl' ? 'Uw gegevens te exporteren' : lang === 'en' ? 'Export your data' : 'Exporter vos données'}</li>
             </ul>
 
+            <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3">
+              {t.privacy.scanTitle}
+            </h3>
+            <p className="text-gray-700 mb-4">{t.privacy.scanCheckText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanIpText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanRequestText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanLegalText}</p>
+            <p className="text-gray-700 mb-4">{t.privacy.scanContactText}</p>
+
             <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-4">
               {t.privacy.cookiesTitle}
             </h2>
