@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isJsonRequest } from '@/lib/http/is-json-request';
 import { readJsonBody } from '@/lib/http/read-json-body';
 import { isValidEmail, MailError, sendMail } from '@/lib/mail/graph';
 import { normalizeDomain } from '@/lib/quick-check/domain';
-import { getClientIp, scanRequestLimiter } from '@/lib/quick-check/rate-limit';
+import { getClientIp, mailGlobalLimiter, scanRequestLimiter } from '@/lib/quick-check/rate-limit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -33,6 +34,7 @@ function line(value: string | undefined): string {
 }
 
 export async function POST(request: NextRequest) {
+  if (!isJsonRequest(request)) return fail('invalid', 415);
   const read = await readJsonBody(request, MAX_BODY_BYTES);
   if (!read.ok) return fail('invalid', 400);
   const body = read.value;
@@ -65,6 +67,7 @@ export async function POST(request: NextRequest) {
 
   const ip = getClientIp(request.headers) ?? 'unknown';
   if (!scanRequestLimiter.hit(ip)) return fail('rate_limited', 429);
+  if (!mailGlobalLimiter.hit('global')) return fail('rate_limited', 429);
 
   const text = [
     `E-mail: ${line(email)}`,

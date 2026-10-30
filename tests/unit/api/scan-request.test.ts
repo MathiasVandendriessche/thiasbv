@@ -8,6 +8,7 @@ vi.mock('@/lib/mail/graph', async (importOriginal) => {
 
 import * as route from '@/app/api/scan-request/route';
 import { MailError, sendMail } from '@/lib/mail/graph';
+import { mailGlobalLimiter } from '@/lib/quick-check/rate-limit';
 
 const { POST } = route;
 const sendMock = vi.mocked(sendMail);
@@ -25,10 +26,10 @@ const valid = {
   lang: 'nl',
 };
 
-function req(body: unknown, ip = freshIp(), raw = false) {
+function req(body: unknown, ip = freshIp(), raw = false, type = 'application/json') {
   return new NextRequest('http://localhost/api/scan-request', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-forwarded-for': ip },
+    headers: { 'content-type': type, 'x-forwarded-for': ip },
     body: raw ? (body as string) : JSON.stringify(body),
   });
 }
@@ -39,6 +40,8 @@ describe('POST /api/scan-request', () => {
   beforeEach(() => {
     sendMock.mockReset();
     sendMock.mockResolvedValue(undefined);
+    // Keep the shared global mail cap out of the way; tested explicitly below.
+    vi.spyOn(mailGlobalLimiter, 'hit').mockReturnValue(true);
     for (const m of ['log', 'info', 'warn', 'error', 'debug'] as const) {
       spies.push(vi.spyOn(console, m).mockImplementation(() => {}));
     }
@@ -105,6 +108,27 @@ describe('POST /api/scan-request', () => {
     expect((await POST(req('{nope', freshIp(), true))).status).toBe(400);
     expect((await POST(req([1]))).status).toBe(400);
     expect((await POST(req({ ...valid, name: 'a'.repeat(3000) }))).status).toBe(400);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it('returns 415 for a non-JSON content type and sends nothing', async () => {
+    for (const type of ['text/plain', 'application/x-www-form-urlencoded']) {
+      const res = await POST(req(valid, freshIp(), false, type));
+      expect(res.status).toBe(415);
+      expect(await res.json()).toEqual({ success: false, error: 'invalid' });
+    }
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it('returns 429 without sending once the shared global mail cap is reached', async () => {
+    vi.mocked(mailGlobalLimiter.hit).mockRestore();
+    const now = Date.now();
+    while (mailGlobalLimiter.hit('global', now)) {
+      // exhaust the hourly cap
+    }
+    const res = await POST(req(valid));
+    expect(res.status).toBe(429);
+    expect(await res.json()).toEqual({ success: false, error: 'rate_limited' });
     expect(sendMock).not.toHaveBeenCalled();
   });
 

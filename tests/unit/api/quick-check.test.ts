@@ -20,10 +20,10 @@ const report: QuickCheckReport = {
 let ipCounter = 0;
 const freshIp = () => `203.0.113.${++ipCounter}`;
 
-function req(body: unknown, ip = freshIp(), raw = false) {
+function req(body: unknown, ip = freshIp(), raw = false, type = 'application/json') {
   return new NextRequest('http://localhost/api/quick-check', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-forwarded-for': ip },
+    headers: { 'content-type': type, 'x-forwarded-for': ip },
     body: raw ? (body as string) : JSON.stringify(body),
   });
 }
@@ -88,6 +88,7 @@ describe('POST /api/quick-check', () => {
     });
     const r = new NextRequest('http://localhost/api/quick-check', {
       method: 'POST',
+      headers: { 'content-type': 'application/json' },
       body: stream,
       duplex: 'half',
     } as ConstructorParameters<typeof NextRequest>[1]);
@@ -95,6 +96,17 @@ describe('POST /api/quick-check', () => {
     const res = await POST(r);
     expect(res.status).toBe(400);
     expect(runMock).not.toHaveBeenCalled();
+  });
+
+  it('returns 415 for a non-JSON content type without running or counting', async () => {
+    const ip = freshIp();
+    for (const type of ['text/plain', 'text/plain;charset=UTF-8', 'application/x-www-form-urlencoded']) {
+      const res = await POST(req({ domain: 'voorbeeld.be' }, ip, false, type));
+      expect(res.status).toBe(415);
+      expect(await res.json()).toEqual({ success: false, error: 'invalid_domain' });
+    }
+    expect(runMock).not.toHaveBeenCalled();
+    for (let i = 0; i < 5; i++) expect((await POST(req({ domain: 'voorbeeld.be' }, ip))).status).toBe(200);
   });
 
   it('does not count invalid input against the rate limit', async () => {
@@ -127,6 +139,7 @@ describe('POST /api/quick-check', () => {
     const hit = vi.spyOn(quickCheckLimiter, 'hit');
     const noIp = new NextRequest('http://localhost/api/quick-check', {
       method: 'POST',
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ domain: 'voorbeeld.be' }),
     });
     await POST(noIp);
