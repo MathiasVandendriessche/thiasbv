@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, Linkedin } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 import { getTranslations, type Language } from "@/lib/i18n";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Language }> }) {
@@ -46,20 +47,31 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
       </div>
 
       {/* Contact Section */}
-      <section className="py-12 sm:py-16">
+      <section className="pb-12 sm:pb-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-12 lg:max-w-none lg:grid-cols-2 lg:gap-16">
+            <section
+              aria-labelledby="contact-form-heading"
+              className="rounded-2xl bg-white p-6 shadow-xl shadow-primary-900/5 ring-1 ring-gray-200 sm:p-8"
+            >
+              <h2 id="contact-form-heading" className="text-2xl font-bold text-gray-900">
+                {t.contact.formTitle}
+              </h2>
+              <p className="mt-2 mb-8 text-gray-600">{t.contact.formSubtitle}</p>
+              <ContactForm lang={lang} />
+            </section>
+
             <div className="space-y-8">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-900">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
                   {t.contact.contactInfo}
                 </h2>
-                <p className="mt-4 text-lg text-gray-600">
+                <p className="mt-2 text-gray-600">
                   {t.contact.contactSubtitle}
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                 <div className="group flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50 hover:ring-primary-200 hover:shadow-md transition-all duration-200">
                   <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 group-hover:from-primary-600 group-hover:to-primary-500 transition-all duration-200">
                     <Phone className="h-7 w-7 text-primary-600 group-hover:text-white transition-colors" />
