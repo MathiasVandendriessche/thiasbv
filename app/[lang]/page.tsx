@@ -1,6 +1,8 @@
 import Hero from "@/components/Hero";
 import ServiceCard from "@/components/ServiceCard";
 import ExperienceCard from "@/components/ExperienceCard";
+import QuickCheck from "@/components/ai-projects/QuickCheck";
+import { getQuickCheckCopy } from "@/lib/quick-check/copy";
 import {
   Settings,
   Zap,
@@ -103,6 +105,33 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
   return (
     <>
       <Hero lang={lang} />
+
+      {/* Quick check: the one thing a visitor can try right away */}
+      <section
+        id="snelle-check"
+        aria-labelledby="quick-check-heading"
+        className="scroll-mt-24 bg-gradient-to-b from-white via-primary-50/40 to-white py-12 sm:py-16"
+      >
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-primary-600">
+              {t.quickCheck.eyebrow}
+            </p>
+            <h2 id="quick-check-heading" className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              {t.quickCheck.title}
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-gray-600">{t.quickCheck.text}</p>
+            <Link
+              href={`/${lang}/ai-projecten#securescan`}
+              className="group mt-6 inline-flex items-center gap-2 font-semibold text-primary-700 hover:text-primary-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-600"
+            >
+              {t.quickCheck.more}
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </Link>
+          </div>
+          <QuickCheck lang={lang} copy={getQuickCheckCopy(lang)} />
+        </div>
+      </section>
 
       {/* Experience & IT Service Management Section */}
       <section className="py-12 sm:py-16 bg-gradient-to-b from-white to-earth-50/20">

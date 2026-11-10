@@ -41,14 +41,14 @@ export default function Hero({ lang = 'nl' }: { lang?: Language }) {
             
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
-                href={`/${lang}/diensten`}
+                href={`/${lang}/contact`}
                 className="group rounded-lg bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary-600/50 hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-700/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-200 flex items-center gap-2"
               >
                 {t.hero.cta1}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href={`/${lang}/contact`}
+                href="#snelle-check"
                 className="group rounded-lg bg-white px-8 py-4 text-base font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-200"
               >
                 {t.hero.cta2}
@@ -57,23 +57,17 @@ export default function Hero({ lang = 'nl' }: { lang?: Language }) {
           </div>
 
           {/* Stats or highlights */}
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600">{t.hero.stats.independent}</div>
-              <div className="mt-2 text-sm font-medium text-gray-900">{t.hero.stats.independentLabel}</div>
-              <div className="mt-1 text-xs text-gray-500">{t.hero.stats.independentSub}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600">{t.hero.stats.pragmatic}</div>
-              <div className="mt-2 text-sm font-medium text-gray-900">{t.hero.stats.pragmaticLabel}</div>
-              <div className="mt-1 text-xs text-gray-500">{t.hero.stats.pragmaticSub}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600">{t.hero.stats.experience}</div>
-              <div className="mt-2 text-sm font-medium text-gray-900">{t.hero.stats.experienceLabel}</div>
-              <div className="mt-1 text-xs text-gray-500">{t.hero.stats.experienceSub}</div>
-            </div>
-          </div>
+          <dl className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {t.hero.stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col-reverse text-center">
+                <dt>
+                  <span className="mt-2 block text-sm font-medium text-gray-900">{stat.label}</span>
+                  <span className="mt-1 block text-xs text-gray-500">{stat.sub}</span>
+                </dt>
+                <dd className="text-4xl font-bold tracking-tight text-primary-600">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>
