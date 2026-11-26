@@ -7,7 +7,7 @@
     "build": "npm ci && next build",
     "start": "next start",
     "serve": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test"
   },
