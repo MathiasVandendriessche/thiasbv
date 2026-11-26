@@ -108,7 +108,7 @@ export default function QuickCheckResult({ report, copy, lang, headingRef }: Qui
             ref={requestButtonRef}
             type="button"
             onClick={() => setRequestOpen(true)}
-            className="mt-4 w-full rounded-xl bg-primary-600 px-5 py-3 text-base font-semibold text-white shadow-lg shadow-primary-600/30 transition-colors duration-200 hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 active:bg-primary-800 sm:w-auto"
+            className="mt-4 w-full rounded-xl bg-primary-600 px-5 py-3 text-base font-semibold text-white shadow-sm btn hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 active:bg-primary-800 sm:w-auto"
           >
             {copy.request.button}
           </button>

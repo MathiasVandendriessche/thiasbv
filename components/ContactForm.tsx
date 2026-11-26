@@ -65,7 +65,7 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
           required
           value={formData.name}
           onChange={handleChange}
-          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 bg-white hover:border-gray-400"
+          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-[border-color,box-shadow] duration-150 bg-white hover:border-gray-400"
           placeholder={t.contact.form.namePlaceholder}
         />
       </div>
@@ -84,7 +84,7 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
           required
           value={formData.email}
           onChange={handleChange}
-          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 bg-white hover:border-gray-400"
+          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-[border-color,box-shadow] duration-150 bg-white hover:border-gray-400"
           placeholder={t.contact.form.emailPlaceholder}
         />
       </div>
@@ -102,7 +102,7 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 bg-white hover:border-gray-400"
+          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-[border-color,box-shadow] duration-150 bg-white hover:border-gray-400"
           placeholder={t.contact.form.phonePlaceholder}
         />
       </div>
@@ -121,7 +121,7 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
           rows={6}
           value={formData.message}
           onChange={handleChange}
-          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all duration-200 resize-none bg-white hover:border-gray-400"
+          className="w-full rounded-xl border border-gray-300 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-[border-color,box-shadow] duration-150 resize-none bg-white hover:border-gray-400"
           placeholder={t.contact.form.messagePlaceholder}
         />
       </div>
@@ -145,7 +145,7 @@ export default function ContactForm({ lang = 'nl' }: { lang?: Language }) {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="group w-full rounded-xl bg-primary-600 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-primary-600/30 hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-700/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-wait disabled:hover:shadow-lg flex items-center justify-center gap-2"
+        className="group w-full rounded-xl bg-primary-600 px-6 py-4 text-base font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 btn disabled:opacity-50 disabled:cursor-wait flex items-center justify-center gap-2"
       >
         {t.contact.form.submit}
         <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />

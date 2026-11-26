@@ -217,7 +217,7 @@ export default function ScanRequestForm({ domain, lang, copy, onCancel }: ScanRe
         <button
           type="submit"
           disabled={sending}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-base font-semibold text-white shadow-lg shadow-primary-600/30 transition-colors duration-200 hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 active:bg-primary-800 disabled:cursor-wait disabled:opacity-70"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-base font-semibold text-white shadow-sm btn hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 active:bg-primary-800 disabled:cursor-wait disabled:opacity-70"
         >
           {sending ? copy.sending : copy.submit}
           <Send className="h-4 w-4" aria-hidden="true" />

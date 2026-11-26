@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getTranslations, type Language } from "@/lib/i18n";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 const seoContent = {
   nl: {
@@ -106,7 +103,7 @@ export default async function LangLayout({
   const { lang } = await params;
   const typedLang = lang as Language;
   return (
-    <html lang={typedLang} className={inter.variable}>
+    <html lang={typedLang}>
       <head>
         <script
           type="application/ld+json"

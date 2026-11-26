@@ -162,7 +162,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
             {values.map((value) => (
               <div
                 key={value.title}
-                className="flex flex-col rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200/50 hover:shadow-md transition-shadow"
+                className="flex flex-col rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200/50"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 mb-4">
                   <value.icon className="h-6 w-6 text-primary-600" />
@@ -270,7 +270,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
           <div className="mt-8 text-center">
             <Link
               href={`/${lang}/diensten`}
-              className="group inline-flex items-center gap-2 rounded-lg bg-gray-900 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 transition-all duration-200"
+              className="group inline-flex items-center gap-2 rounded-lg bg-gray-900 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 btn"
             >
               {t.services.viewAll}
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -299,13 +299,13 @@ export default async function Home({ params }: { params: Promise<{ lang: Languag
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href={`/${lang}/contact`}
-                className="rounded-lg bg-white px-8 py-4 text-base font-semibold text-primary-600 shadow-lg shadow-white/20 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-200"
+                className="rounded-lg bg-white px-8 py-4 text-base font-semibold text-primary-600 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white btn"
               >
                 {t.cta.button}
               </Link>
               <a
                 href="tel:+32485119256"
-                className="rounded-lg bg-white/10 px-8 py-4 text-base font-semibold text-white ring-1 ring-inset ring-white/20 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-200"
+                className="rounded-lg bg-white/10 px-8 py-4 text-base font-semibold text-white ring-1 ring-inset ring-white/20 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white btn"
               >
                 {t.cta.phone}
               </a>

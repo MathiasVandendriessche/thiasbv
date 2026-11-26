@@ -104,7 +104,7 @@ export default function QuickCheck({ lang, copy }: QuickCheckProps) {
             <button
               type="submit"
               disabled={loading}
-              className="rounded-xl bg-accent-yellow px-5 py-3 text-base font-semibold text-gray-900 shadow-lg shadow-primary-900/30 transition-colors duration-200 hover:bg-yellow-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-yellow-400 disabled:cursor-wait disabled:opacity-70"
+              className="rounded-xl bg-accent-yellow px-5 py-3 text-base font-semibold text-gray-900 shadow-sm btn hover:bg-yellow-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-yellow-400 disabled:cursor-wait disabled:opacity-70"
             >
               {copy.button}
             </button>

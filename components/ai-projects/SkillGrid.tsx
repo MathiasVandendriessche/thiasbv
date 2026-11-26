@@ -18,7 +18,7 @@ export default function SkillGrid({ skills }: SkillGridProps) {
         {skills.items.map((skill) => (
           <li
             key={skill.name}
-            className="rounded-xl bg-white p-5 ring-1 ring-gray-200/70 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:ring-primary-200"
+            className="rounded-xl bg-white p-5 ring-1 ring-gray-200/70 shadow-sm"
           >
             <p className="flex items-center gap-2 font-semibold text-gray-900">
               <Sparkles className="h-4 w-4 flex-shrink-0 text-primary-500" aria-hidden="true" />
