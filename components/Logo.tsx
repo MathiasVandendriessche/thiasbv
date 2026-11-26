@@ -19,7 +19,7 @@ export default function Logo({ className }: { className?: string }) {
       <path
         d="M20 30 L40 10 L60 30 L50 40 L30 40 Z"
         fill="url(#logoGradient)"
-        className="transition-transform duration-300 hover:scale-110"
+        
       />
       
       {/* Text */}

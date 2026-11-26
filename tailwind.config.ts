@@ -1,6 +1,10 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  // Hover styles only on devices that can hover: no stuck hover states on touch
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -60,29 +64,15 @@ const config: Config = {
         },
       },
       fontFamily: {
+        // Platform system font: ships optical sizing and tuned tracking
         sans: [
+          "system-ui",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
           "Roboto",
-          "Inter",
-          "system-ui",
           "sans-serif",
         ],
-      },
-      animation: {
-        "fade-in": "fadeIn 0.6s ease-in-out",
-        "slide-up": "slideUp 0.6s ease-out",
-      },
-      keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-        slideUp: {
-          "0%": { transform: "translateY(20px)", opacity: "0" },
-          "100%": { transform: "translateY(0)", opacity: "1" },
-        },
       },
     },
   },

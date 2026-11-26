@@ -188,7 +188,7 @@ export default async function DienstenPage({ params }: { params: Promise<{ lang:
             {services.map((service, index) => (
               <div key={service.title} className="relative">
                 {/* Decorative number badge - larger and more prominent */}
-                <div className="absolute -left-3 -top-3 z-10 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 text-white font-bold text-xl shadow-xl ring-4 ring-white transform group-hover:scale-110 transition-transform">
+                <div className="absolute -left-3 -top-3 z-10 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 text-white font-bold text-xl shadow-xl ring-4 ring-white">
                   {index + 1}
                 </div>
                 <ServiceCard
@@ -229,13 +229,13 @@ export default async function DienstenPage({ params }: { params: Promise<{ lang:
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href={`/${lang}/contact`}
-                className="rounded-lg bg-white px-8 py-4 text-base font-semibold text-primary-600 shadow-xl shadow-white/30 hover:bg-gray-50 hover:shadow-2xl hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-200"
+                className="rounded-lg bg-white px-8 py-4 text-base font-semibold text-primary-600 shadow-sm hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white btn"
               >
                 {t.services.cta.button}
               </Link>
               <a
                 href="tel:+32485119256"
-                className="rounded-lg bg-white/10 backdrop-blur-sm px-8 py-4 text-base font-semibold text-white ring-2 ring-inset ring-white/30 hover:bg-white/20 hover:ring-white/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all duration-200"
+                className="rounded-lg bg-white/10 px-8 py-4 text-base font-semibold text-white ring-2 ring-inset ring-white/30 hover:bg-white/20 hover:ring-white/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white btn"
               >
                 {t.services.cta.phone}
               </a>

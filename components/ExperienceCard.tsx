@@ -24,16 +24,14 @@ export default function ExperienceCard({
   const descriptionArray = Array.isArray(description) ? description : [description];
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200/50 hover:shadow-xl hover:ring-primary-200 transition-all duration-300 hover:-translate-y-1">
-      {/* Background gradient on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-earth-50/0 group-hover:from-primary-50/30 group-hover:to-earth-50/20 transition-all duration-300" />
+    <div className="relative rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-900/5">
       
       <div className="relative">
         {/* Header */}
         <div className="mb-4">
           <div className="flex items-start justify-between gap-4 mb-2">
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary-700 transition-colors mb-1">
+              <h3 className="text-xl font-bold text-gray-900 mb-1">
                 {title}
               </h3>
               <div className="flex items-center gap-2 text-primary-600 font-semibold">
@@ -83,8 +81,6 @@ export default function ExperienceCard({
         )}
       </div>
       
-      {/* Decorative corner element */}
-      <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
     </div>
   );
 }

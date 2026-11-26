@@ -1,102 +1,151 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getTranslations, type Language } from "@/lib/i18n";
 
+const PHONE_HREF = "tel:+32485119256";
+const PHONE_LABEL = "+32 485 11 92 56";
+
+function isCurrentPage(pathname: string, href: string, homeHref: string): boolean {
+  if (href === homeHref) return pathname === homeHref;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Header({ lang = 'nl' }: { lang?: Language }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
   const t = getTranslations(lang);
+  const homeHref = `/${lang}`;
 
   const navigation = [
-    { name: t.nav.home, href: `/${lang}` },
+    { name: t.nav.home, href: homeHref },
     { name: t.nav.services, href: `/${lang}/diensten` },
     { name: t.nav.experience, href: `/${lang}/ervaring` },
     { name: t.nav.aiProjects, href: `/${lang}/ai-projecten` },
     { name: t.nav.contact, href: `/${lang}/contact` },
   ];
 
+  // The header edge only shows once content is actually underneath it.
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(([entry]) => setScrolled(!entry.isIntersecting));
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [mobileMenuOpen]);
+
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/50 shadow-sm">
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
-        <div className="flex h-20 items-center justify-between">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center group">
-              <Logo className="h-12 w-auto transition-transform duration-200 group-hover:scale-105" />
+    <>
+      <div ref={sentinelRef} className="absolute left-0 top-0 h-px w-px" aria-hidden="true" />
+      <header
+        className="material-bar sticky top-0 z-50"
+        data-scrolled={scrolled || mobileMenuOpen}
+      >
+        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
+          <div className="flex h-16 items-center justify-between">
+            <Link href={homeHref} className="btn flex items-center rounded-lg">
+              <Logo className="h-10 w-auto" />
             </Link>
-          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium text-[15px] relative group"
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex md:items-center md:gap-6">
+              {navigation.map((item) => {
+                const current = isCurrentPage(pathname, item.href, homeHref);
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    aria-current={current ? "page" : undefined}
+                    className={`nav-link relative text-[15px] font-medium transition-colors duration-150 ${
+                      current ? "text-primary-700" : "text-gray-700 hover:text-primary-700"
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
+              <LanguageSwitcher currentLang={lang} />
+              <a
+                href={PHONE_HREF}
+                className="btn rounded-lg bg-primary-600 px-5 py-2 text-[15px] font-medium text-white hover:bg-primary-700"
               >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all duration-200 group-hover:w-full" />
-              </Link>
-            ))}
-            <LanguageSwitcher currentLang={lang} />
-            <a
-              href="tel:+32485119256"
-              className="bg-primary-600 text-white px-6 py-2.5 rounded-lg hover:bg-primary-700 transition-all duration-200 font-medium shadow-sm hover:shadow-md"
-            >
-              +32 485 11 92 56
-            </a>
-          </div>
+                {PHONE_LABEL}
+              </a>
+            </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <span className="sr-only">Open hoofdmenu</span>
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" aria-hidden="true" />
-              ) : (
-                <Menu className="h-6 w-6" aria-hidden="true" />
-              )}
-            </button>
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                type="button"
+                className="btn inline-flex h-11 w-11 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-900/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500"
+                aria-controls="mobile-menu"
+                aria-expanded={mobileMenuOpen}
+                onClick={() => setMobileMenuOpen((open) => !open)}
+              >
+                <span className="sr-only">{mobileMenuOpen ? "Sluit hoofdmenu" : "Open hoofdmenu"}</span>
+                {mobileMenuOpen ? (
+                  <X className="h-6 w-6" aria-hidden="true" />
+                ) : (
+                  <Menu className="h-6 w-6" aria-hidden="true" />
+                )}
+              </button>
+            </div>
           </div>
-        </div>
+        </nav>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden" id="mobile-menu">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
+        {/* Mobile Navigation: drops from the bar it belongs to, and returns the same way */}
+        <div
+          id="mobile-menu"
+          data-open={mobileMenuOpen}
+          inert={!mobileMenuOpen}
+          className="popover absolute inset-x-0 top-full origin-top border-t border-gray-900/5 bg-white shadow-lg shadow-gray-900/10 md:hidden"
+        >
+          <div className="space-y-1 px-4 pb-4 pt-2">
+            {navigation.map((item) => {
+              const current = isCurrentPage(pathname, item.href, homeHref);
+              return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-primary-600"
+                  aria-current={current ? "page" : undefined}
+                  className={`block rounded-lg px-3 py-3 text-base font-medium active:bg-gray-100 ${
+                    current ? "bg-primary-50 text-primary-700" : "text-gray-700 hover:bg-gray-50"
+                  }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
-              ))}
-              <div className="px-3 py-2">
-                <LanguageSwitcher currentLang={lang} />
-              </div>
-              <a
-                href="tel:+32485119256"
-                className="block rounded-md px-3 py-2 text-base font-medium bg-primary-600 text-white hover:bg-primary-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                +32 485 11 92 56
-              </a>
+              );
+            })}
+            <div className="py-2">
+              <LanguageSwitcher currentLang={lang} />
             </div>
+            <a
+              href={PHONE_HREF}
+              className="btn block rounded-lg bg-primary-600 px-3 py-3 text-center text-base font-medium text-white hover:bg-primary-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {PHONE_LABEL}
+            </a>
           </div>
-        )}
-      </nav>
-    </header>
+        </div>
+      </header>
+    </>
   );
 }

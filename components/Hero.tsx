@@ -16,7 +16,7 @@ export default function Hero({ lang = 'nl' }: { lang?: Language }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-16 sm:pt-20 sm:pb-20">
         <div className="mx-auto max-w-4xl">
           <div className="mb-8 flex justify-center">
-            <div className="relative rounded-full px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20 bg-white/80 backdrop-blur-sm">
+            <div className="relative rounded-full px-4 py-1.5 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 bg-white">
               <span className="font-semibold text-primary-600">
                 {t.hero.badge}
               </span>
@@ -26,9 +26,9 @@ export default function Hero({ lang = 'nl' }: { lang?: Language }) {
           </div>
           
           <div className="text-center">
-            <h1 className="text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl">
+            <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-gray-900 sm:text-7xl sm:leading-[1.03] sm:tracking-[-0.03em]">
               <span className="block">{t.hero.title}</span>
-              <span className="block mt-2 text-primary-600">{t.hero.titleHighlight}</span>
+              <span className="block text-primary-600">{t.hero.titleHighlight}</span>
             </h1>
             
             <p className="mt-6 text-xl leading-8 text-gray-600 sm:text-2xl max-w-3xl mx-auto">
@@ -42,14 +42,14 @@ export default function Hero({ lang = 'nl' }: { lang?: Language }) {
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
               <Link
                 href={`/${lang}/contact`}
-                className="group rounded-lg bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-primary-600/50 hover:bg-primary-700 hover:shadow-xl hover:shadow-primary-700/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-200 flex items-center gap-2"
+                className="group rounded-lg bg-primary-600 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 btn flex items-center gap-2"
               >
                 {t.hero.cta1}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="#snelle-check"
-                className="group rounded-lg bg-white px-8 py-4 text-base font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition-all duration-200"
+                className="group rounded-lg bg-white px-8 py-4 text-base font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 btn"
               >
                 {t.hero.cta2}
               </Link>

@@ -72,9 +72,9 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                <div className="group flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50 hover:ring-primary-200 hover:shadow-md transition-all duration-200">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 group-hover:from-primary-600 group-hover:to-primary-500 transition-all duration-200">
-                    <Phone className="h-7 w-7 text-primary-600 group-hover:text-white transition-colors" />
+                <div className="flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50">
+                    <Phone className="h-7 w-7 text-primary-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
@@ -89,9 +89,9 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
                   </div>
                 </div>
 
-                <div className="group flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50 hover:ring-primary-200 hover:shadow-md transition-all duration-200">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 group-hover:from-primary-600 group-hover:to-primary-500 transition-all duration-200">
-                    <Mail className="h-7 w-7 text-primary-600 group-hover:text-white transition-colors" />
+                <div className="flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50">
+                    <Mail className="h-7 w-7 text-primary-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
@@ -106,9 +106,9 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
                   </div>
                 </div>
 
-                <div className="group flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50 hover:ring-primary-200 hover:shadow-md transition-all duration-200">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 group-hover:from-primary-600 group-hover:to-primary-500 transition-all duration-200">
-                    <MapPin className="h-7 w-7 text-primary-600 group-hover:text-white transition-colors" />
+                <div className="flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50">
+                    <MapPin className="h-7 w-7 text-primary-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
@@ -125,9 +125,9 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
                   </div>
                 </div>
 
-                <div className="group flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50 hover:ring-primary-200 hover:shadow-md transition-all duration-200">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 group-hover:from-primary-600 group-hover:to-primary-500 transition-all duration-200">
-                    <Linkedin className="h-7 w-7 text-primary-600 group-hover:text-white transition-colors" />
+                <div className="flex items-start gap-4 rounded-xl bg-white p-6 ring-1 ring-gray-200/50">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-100 to-primary-50">
+                    <Linkedin className="h-7 w-7 text-primary-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">

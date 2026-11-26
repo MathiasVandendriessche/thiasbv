@@ -102,7 +102,7 @@ export default async function AiProjectenPage({ params }: PageProps) {
           <p className="mt-4 text-lg leading-8 text-primary-100">{c.cta.text}</p>
           <Link
             href={`/${lang}/contact`}
-            className="group mt-8 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 font-semibold text-primary-700 shadow-lg transition-all duration-200 hover:bg-primary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="group mt-8 inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 font-semibold text-primary-700 shadow-sm btn hover:bg-primary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             {c.cta.button}
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
